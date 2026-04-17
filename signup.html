@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - Reading Owl</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    :root {
+      --chestnut-50: #FCF6F4;
+      --chestnut-100: #F8ECEA;
+      --chestnut-200: #F4D9D7;
+      --chestnut-300: #EBBAB8;
+      --chestnut-400: #DE938E;
+      --chestnut-500: #CE6865;
+      --chestnut-600: #B44446;
+      --chestnut-700: #9A363A;
+      --chestnut-800: #822F35;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--chestnut-600) 0%, var(--chestnut-800) 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .auth-container {
+      display: flex;
+      max-width: 1000px;
+      width: 100%;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    .auth-image {
+      flex: 1;
+      background: linear-gradient(rgba(180, 68, 70, 0.7), rgba(130, 47, 53, 0.7)), url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1828&q=80');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+
+    .auth-image h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .auth-image p {
+      font-size: 1.1rem;
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    .benefits-list {
+      text-align: left;
+      margin-top: 30px;
+      max-width: 350px;
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .benefit-item i {
+      color: var(--chestnut-200);
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+
+    .owl-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      color: var(--chestnut-200);
+      filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+    }
+
+    .auth-form {
+      flex: 1;
+      padding: 50px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: var(--chestnut-50);
+    }
+
+    .auth-form h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: var(--chestnut-800);
+    }
+
+    .subtitle {
+      color: var(--chestnut-700);
+      margin-bottom: 30px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+      flex: 1;
+    }
+
+    .form-group i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--chestnut-600);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 15px 15px 15px 45px;
+      border: 2px solid var(--chestnut-200);
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: white;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--chestnut-600);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(180, 68, 70, 0.1);
+    }
+
+    .btn {
+      background: linear-gradient(to right, var(--chestnut-600), var(--chestnut-800));
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(180, 68, 70, 0.4);
+    }
+
+    .links {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .links a {
+      color: var(--chestnut-600);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .links a:hover {
+      color: var(--chestnut-800);
+      text-decoration: underline;
+    }
+
+    .social-login {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 25px 0;
+    }
+
+    .social-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border: 1px solid var(--chestnut-200);
+      color: var(--chestnut-600);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--chestnut-200);
+    }
+
+    .divider span {
+      padding: 0 15px;
+      color: var(--chestnut-700);
+      font-size: 0.9rem;
+    }
+
+    .terms {
+      display: flex;
+      align-items: flex-start;
+      margin: 20px 0;
+    }
+
+    .terms input {
+      width: auto;
+      margin-right: 10px;
+      margin-top: 3px;
+    }
+
+    .terms label {
+      font-size: 0.9rem;
+      color: var(--chestnut-700);
+      line-height: 1.4;
+    }
+
+    .terms a {
+      color: var(--chestnut-600);
+      text-decoration: none;
+    }
+
+    .terms a:hover {
+      text-decoration: underline;
+    }
+
+    .password-strength {
+      height: 5px;
+      background: var(--chestnut-200);
+      border-radius: 5px;
+      margin-top: 5px;
+      overflow: hidden;
+    }
+
+    .strength-meter {
+      height: 100%;
+      width: 0%;
+      transition: all 0.3s ease;
+    }
+
+    .strength-weak {
+      background: #ff6b6b;
+      width: 33%;
+    }
+
+    .strength-medium {
+      background: var(--chestnut-400);
+      width: 66%;
+    }
+
+    .strength-strong {
+      background: var(--chestnut-600);
+      width: 100%;
+    }
+
+    .success-message {
+      background: var(--chestnut-100);
+      border: 1px solid var(--chestnut-300);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .success-message i {
+      font-size: 3rem;
+      color: var(--chestnut-600);
+      margin-bottom: 15px;
+    }
+
+    .success-message h3 {
+      color: var(--chestnut-800);
+      margin-bottom: 10px;
+    }
+
+    .success-message p {
+      color: var(--chestnut-700);
+    }
+
+    @media (max-width: 768px) {
+      .auth-container {
+        flex-direction: column;
+      }
+      
+      .auth-image {
+        padding: 30px 20px;
+      }
+      
+      .auth-form {
+        padding: 30px 20px;
+      }
+
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container">
+    <!-- Left image section -->
+    <div class="auth-image">
+      <i class="fas fa-owl owl-icon"></i>
+      <h1>Join Reading Owl</h1>
+      <p>Start your literary adventure and discover new worlds between the pages</p>
+      
+      <div class="benefits-list">
+        <div class="benefit-item">
+          <i class="fas fa-book-open"></i>
+          <span>Track your reading progress</span>
+        </div>
+        <div class="benefit-item">
+          <i class="fas fa-users"></i>
+          <span>Join a community of book lovers</span>
+        </div>
+        <div class="benefit-item">
+          <i class="fas fa-star"></i>
+          <span>Personalized book recommendations</span>
+        </div>
+        <div class="benefit-item">
+          <i class="fas fa-trophy"></i>
+          <span>Earn reading achievements</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right form section -->
+    <div class="auth-form">
+      <h2>Create Your Account</h2>
+      <p class="subtitle">Join thousands of readers in our community</p>
+
+      <form id="signupForm">
+        <div class="form-row">
+          <div class="form-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="first-name" placeholder="First Name" required>
+          </div>
+          <div class="form-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="last-name" placeholder="Last Name" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="signup-email" placeholder="Email Address" required>
+        </div>
+        
+        <div class="form-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="signup-password" placeholder="Password" required>
+          <div class="password-strength">
+            <div class="strength-meter" id="password-strength-meter"></div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <i class="fas fa-calendar-alt"></i>
+          <input type="date" id="birthdate" required>
+        </div>
+        
+        <div class="form-group">
+          <i class="fas fa-book"></i>
+          <select id="favorite-genre" required>
+            <option value="" disabled selected>Select your favorite genre</option>
+            <option value="fiction">Fiction</option>
+            <option value="mystery">Mystery & Thriller</option>
+            <option value="scifi">Science Fiction</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="romance">Romance</option>
+            <option value="biography">Biography</option>
+            <option value="history">History</option>
+            <option value="selfhelp">Self-Help</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        
+        <div class="terms">
+          <input type="checkbox" id="terms" required>
+          <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+        </div>
+        
+        <div class="terms">
+          <input type="checkbox" id="newsletter">
+          <label for="newsletter">Send me reading recommendations and community updates</label>
+        </div>
+        
+        <button type="submit" class="btn">Create Account</button>
+      </form>
+
+      <div class="divider">
+        <span>Or sign up with</span>
+      </div>
+
+      <div class="social-login">
+        <button class="social-btn">
+          <i class="fab fa-google"></i>
+        </button>
+        <button class="social-btn">
+          <i class="fab fa-facebook-f"></i>
+        </button>
+        <button class="social-btn">
+          <i class="fab fa-twitter"></i>
+        </button>
+      </div>
+
+      <div class="links">
+        <p>Already have an account? <a href="login.html">Log in</a></p>
+      </div>
+
+      <!-- Success Message -->
+      <div class="success-message" id="success-message">
+        <i class="fas fa-check-circle"></i>
+        <h3>Welcome to Reading Owl!</h3>
+        <p>Your account has been created successfully. Check your email to verify your account.</p>
+        <div style="margin-top: 20px;">
+          <a href="login.html" class="btn">Continue to Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Password strength indicator
+    document.getElementById('signup-password').addEventListener('input', function() {
+      const password = this.value;
+      const strengthMeter = document.getElementById('password-strength-meter');
+      
+      // Reset classes
+      strengthMeter.className = 'strength-meter';
+      
+      if (password.length === 0) {
+        strengthMeter.style.width = '0%';
+        return;
+      }
+      
+      // Calculate strength
+      let strength = 0;
+      if (password.length >= 8) strength += 1;
+      if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 1;
+      if (password.match(/\d/)) strength += 1;
+      if (password.match(/[^a-zA-Z\d]/)) strength += 1;
+      
+      // Update strength meter
+      if (strength <= 1) {
+        strengthMeter.classList.add('strength-weak');
+      } else if (strength <= 3) {
+        strengthMeter.classList.add('strength-medium');
+      } else {
+        strengthMeter.classList.add('strength-strong');
+      }
+    });
+
+    // Form submission handler
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get form values
+      const firstName = document.getElementById('first-name').value;
+      const lastName = document.getElementById('last-name').value;
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+      const birthdate = document.getElementById('birthdate').value;
+      const genre = document.getElementById('favorite-genre').value;
+      
+      // Simple validation
+      if (password.length < 6) {
+        alert('Password must be at least 6 characters long.');
+        return;
+      }
+      
+      // Calculate age from birthdate
+      const today = new Date();
+      const birthDate = new Date(birthdate);
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      
+      if (age < 13) {
+        alert('You must be at least 13 years old to create an account.');
+        return;
+      }
+      
+      // In a real app, you would send the data to your backend
+      // For demo purposes, we'll show the success message
+      document.getElementById('signupForm').style.display = 'none';
+      document.getElementById('success-message').style.display = 'block';
+      
+      // Log the data (for demo purposes)
+      console.log({
+        firstName,
+        lastName,
+        email,
+        password: '***', // Don't log actual password
+        birthdate,
+        favoriteGenre: genre
+      });
+    });
+
+    // Set max date for birthdate (13 years old)
+    window.onload = function() {
+      const today = new Date();
+      const maxDate = new Date(today.getFullYear() - 13, today.getMonth(), today.getDate());
+      document.getElementById('birthdate').max = maxDate.toISOString().split('T')[0];
+    };
+
+    // Add some interactive animations
+    document.querySelectorAll('input, select').forEach(input => {
+      input.addEventListener('focus', function() {
+        this.parentElement.style.transform = 'scale(1.02)';
+      });
+      
+      input.addEventListener('blur', function() {
+        this.parentElement.style.transform = 'scale(1)';
+      });
+    });
+
+    // Social login buttons
+    document.querySelectorAll('.social-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const platform = this.querySelector('i').className.includes('google') ? 'Google' : 
+                        this.querySelector('i').className.includes('facebook') ? 'Facebook' : 'Twitter';
+        alert(`In a real application, this would connect to ${platform} OAuth`);
+      });
+    });
+  </script>
+</body>
+</html>

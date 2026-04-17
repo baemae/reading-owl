@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Owl - Your Personal Reading Companion</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦉</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-50: #FCF6F4;
+            --primary-100: #F7ECEA;
+            --primary-200: #F4D9D7;
+            --primary-300: #EBBAB8;
+            --primary-400: #DE938E;
+            --primary-500: #CE6855;
+            --primary-600: #B44446;
+            --primary-700: #9A363A;
+            --primary-800: #822F35;
+            --gray-100: #f5f5f5;
+            --gray-200: #eeeeee;
+            --gray-300: #e0e0e0;
+            --gray-400: #bdbdbd;
+            --gray-500: #9e9e9e;
+            --gray-600: #757575;
+            --gray-700: #616161;
+            --gray-800: #424242;
+            --gray-900: #212121;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--primary-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary-700), var(--primary-800));
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--primary-200);
+            position: relative;
+        }
+
+        .logo-icon::after {
+            content: "🦉";
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--primary-200);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-200);
+            color: var(--primary-200);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-500);
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-600);
+        }
+
+        /* Mobile menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn-large {
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-700);
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--primary-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--primary-600);
+            font-size: 2rem;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            background-color: var(--primary-200);
+            transform: scale(1.1);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-700);
+        }
+
+        .feature-card p {
+            color: var(--gray-600);
+        }
+
+        /* Most Read Books Section */
+        .most-read {
+            padding: 5rem 2rem;
+            background-color: var(--primary-100);
+        }
+
+        .most-read-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Improved Book Carousel */
+        .book-carousel-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin: 50px auto;
+        }
+
+        .book-carousel {
+            display: flex;
+            gap: 1.5em;
+            padding: 1em 0;
+        }
+
+        .book-group {
+            display: flex;
+            gap: 1.5em;
+            animation: scroll 30s linear infinite;
+        }
+
+        .book-card-carousel {
+            flex: 0 0 12em;
+            height: 15em;
+            padding: 1em;
+            background: white;
+            border-radius: 0.5em;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .book-card-carousel:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .book-cover-carousel {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+            border-radius: 0.3em;
+            margin-bottom: 0.5em;
+        }
+        
+        .book-title-carousel {
+            font-weight: bold;
+            color: var(--primary-700);
+            margin-bottom: 0.3em;
+            font-size: 0.9rem;
+        }
+        
+        .book-author-carousel {
+            color: var(--gray-600);
+            font-size: 0.8rem;
+        }
+        
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(calc(-12em - 1.5em));
+            }
+        }
+        
+        .book-carousel-container:hover .book-group {
+            animation-play-state: paused;
+        }
+
+        /* Stats Preview */
+        .stats-preview {
+            background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+            color: white;
+            padding: 4rem 2rem;
+        }
+
+        .stats-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: var(--gray-700);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-400);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .author-info h4 {
+            color: var(--primary-700);
+            margin-bottom: 0.2rem;
+        }
+
+        .author-info p {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-800);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-col h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-200);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-col a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary-500);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .features-grid {
+                flex-wrap: wrap;
+            }
+            
+            .feature-card {
+                min-width: 45%;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(135deg, var(--primary-700), var(--primary-800));
+                padding: 1rem 2rem;
+                box-shadow: var(--shadow);
+                transform: translateY(-10px);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+            }
+            
+            nav.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .book-card-carousel {
+                flex: 0 0 10em;
+                height: 13em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+            }
+            
+            .auth-buttons {
+                width: 100%;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+            
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .feature-card {
+                min-width: 100%;
+            }
+            
+            .book-card-carousel {
+                flex: 0 0 8em;
+                height: 11em;
+            }
+        }
+
+        @media (max-width: 576px) {
+            header {
+                padding: 1rem;
+            }
+            
+            .hero {
+                padding: 4rem 1rem;
+            }
+
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .features, .testimonials, .most-read {
+                padding: 3rem 1rem;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+            }
+            
+            .book-card-carousel {
+                flex: 0 0 7em;
+                height: 10em;
+            }
+            
+            .book-title-carousel {
+                font-size: 0.8rem;
+            }
+            
+            .book-author-carousel {
+                font-size: 0.7rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <h1>Reading <span>Owl</span></h1>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="home.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="stats.html"><i class="fas fa-chart-bar"></i> Stats</a></li>
+                    <li><a href="community.html"><i class="fas fa-users"></i> Community</a></li>
+                    <li><a href="library.html"><i class="fas fa-book"></i> Library</a></li>
+                    <li><a href="challenges.html"><i class="fas fa-trophy"></i> Challenges</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <a href="login.html" class="btn btn-outline">Sign In</a>
+                <a href="signup.html" class="btn btn-primary">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Track, Discover, and Share Your Reading Journey</h2>
+            <p>Reading Owl helps you track your reading habits, discover new books, and connect with a community of fellow book lovers.</p>
+            <div class="hero-buttons">
+                <a href="signup.html" class="btn btn-primary btn-large">Start Your Journey</a>
+                <a href="#features" class="btn btn-outline btn-large">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-title">
+            <h2>Why Choose Reading Owl?</h2>
+            <p>Our platform offers everything you need to enhance your reading experience</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Reading Statistics</h3>
+                <p>Track your reading progress with detailed analytics, visual charts, and personalized insights.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3>Reading Challenges</h3>
+                <p>Participate in fun challenges, earn badges, and stay motivated to reach your reading goals.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Book Community</h3>
+                <p>Join reading groups, participate in discussions, and share recommendations with fellow readers.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h3>Digital Library</h3>
+                <p>Organize your reading list, track books you've read, and discover new titles to explore.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Most Read Books Section -->
+    <section class="most-read">
+        <div class="most-read-container">
+            <div class="section-title">
+                <h2>Most Read Books This Month</h2>
+                <p>Discover what our community is reading right now</p>
+            </div>
+            
+            <!-- Improved Animated Book Carousel -->
+            <div class="book-carousel-container">
+                <div class="book-carousel">
+                    <div class="book-group">
+                        <div class="book-card-carousel">
+                            <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="The Silent Patient" class="book-cover-carousel">
+                            <div class="book-title-carousel">The Silent Patient</div>
+                            <div class="book-author-carousel">Alex Michaelides</div>
+                        </div>
+                        <div class="book-card-carousel">
+                            <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="Project Hail Mary" class="book-cover-carousel">
+                            <div class="book-title-carousel">Project Hail Mary</div>
+                            <div class="book-author-carousel">Andy Weir</div>
+                        </div>
+                        <div class="book-card-carousel">
+                            <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="The Midnight Library" class="book-cover-carousel">
+                            <div class="book-title-carousel">The Midnight Library</div>
+                            <div class="book-author-carousel">Matt Haig</div>
+                        </div>
+                        <div class="book-card-carousel">
+                            <img src="https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="Klara and the Sun" class="book-cover-carousel">
+                            <div class="book-title-carousel">Klara and the Sun</div>
+                            <div class="book-author-carousel">Kazuo Ishiguro</div>
+                        </div>
+                        <div class="book-card-carousel">
+                            <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="The Four Winds" class="book-cover-carousel">
+                            <div class="book-title-carousel">The Four Winds</div>
+                            <div class="book-author-carousel">Kristin Hannah</div>
+                        </div>
+                        <div class="book-card-carousel">
+                            <img src="https://images.unsplash.com/photo-1554757380-2fb69b9c4549?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="The Invisible Life" class="book-cover-carousel">
+                            <div class="book-title-carousel">The Invisible Life</div>
+                            <div class="book-author-carousel">Addie LaRue</div>
+                        </div>
+                        <!-- Duplicate for seamless loop -->
+                        <div class="book-card-carousel">
+                            <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="The Silent Patient" class="book-cover-carousel">
+                            <div class="book-title-carousel">The Silent Patient</div>
+                            <div class="book-author-carousel">Alex Michaelides</div>
+                        </div>
+                        <div class="book-card-carousel">
+                            <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="Project Hail Mary" class="book-cover-carousel">
+                            <div class="book-title-carousel">Project Hail Mary</div>
+                            <div class="book-author-carousel">Andy Weir</div>
+                        </div>
+                        <div class="book-card-carousel">
+                            <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="The Midnight Library" class="book-cover-carousel">
+                            <div class="book-title-carousel">The Midnight Library</div>
+                            <div class="book-author-carousel">Matt Haig</div>
+                        </div>
+                        <div class="book-card-carousel">
+                            <img src="https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="Klara and the Sun" class="book-cover-carousel">
+                            <div class="book-title-carousel">Klara and the Sun</div>
+                            <div class="book-author-carousel">Kazuo Ishiguro</div>
+                        </div>
+                        <div class="book-card-carousel">
+                            <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="The Four Winds" class="book-cover-carousel">
+                            <div class="book-title-carousel">The Four Winds</div>
+                            <div class="book-author-carousel">Kristin Hannah</div>
+                        </div>
+                        <div class="book-card-carousel">
+                            <img src="https://images.unsplash.com/photo-1554757380-2fb69b9c4549?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="The Invisible Life" class="book-cover-carousel">
+                            <div class="book-title-carousel">The Invisible Life</div>
+                            <div class="book-author-carousel">Addie LaRue</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Preview -->
+    <section class="stats-preview">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-value" data-target="50000">0</div>
+                <div class="stat-label">Books Tracked</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" data-target="15000">0</div>
+                <div class="stat-label">Active Readers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" data-target="200">0</div>
+                <div class="stat-label">Reading Groups</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" data-target="1000000">0</div>
+                <div class="stat-label">Pages Read</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="section-title">
+            <h2>What Our Readers Say</h2>
+            <p>Discover how Reading Owl has transformed reading experiences</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    "Reading Owl has completely changed how I approach reading. The challenges keep me motivated, and I've discovered so many amazing books through the community!"
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">SJ</div>
+                    <div class="author-info">
+                        <h4>Sarah Johnson</h4>
+                        <p>Book Blogger</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    "As a busy professional, I struggled to find time for reading. The stats feature helped me identify my reading patterns, and now I'm reading more than ever!"
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">MT</div>
+                    <div class="author-info">
+                        <h4>Michael Torres</h4>
+                        <p>Software Engineer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    "I've joined three reading groups on Reading Owl and made friends with people who share my love for fantasy novels. It's like having a book club available 24/7!"
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">ER</div>
+                    <div class="author-info">
+                        <h4>Emma Richardson</h4>
+                        <p>Teacher</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="cta-content">
+            <h2>Start Your Reading Journey Today</h2>
+            <p>Join thousands of readers who are already tracking their progress, discovering new books, and connecting with fellow book lovers.</p>
+            <a href="signup.html" class="btn btn-primary btn-large">Create Your Account</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Reading Owl</h3>
+                <p>Your personal reading companion for tracking, discovering, and sharing your literary journey.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-goodreads"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Explore</h3>
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="community.html">Community</a></li>
+                    <li><a href="challenges.html">Challenges</a></li>
+                    <li><a href="library.html">Library</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Newsletter</h3>
+                <p>Subscribe to get reading tips, book recommendations, and platform updates.</p>
+                <form>
+                    <input type="email" placeholder="Your email address" style="padding: 0.8rem; width: 100%; border-radius: 6px; border: none; margin-bottom: 1rem;">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Reading Owl. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mainNav = document.getElementById('mainNav');
+            
+            if (mobileMenuBtn && mainNav) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mainNav.classList.toggle('active');
+                    const icon = this.querySelector('i');
+                    if (mainNav.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!mainNav.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+                        mainNav.classList.remove('active');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            }
+            
+            // Animated counters for stats
+            const statValues = document.querySelectorAll('.stat-value');
+            let statsAnimated = false;
+            
+            // Animate numbers
+            function animateValue(element, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const value = Math.floor(progress * (end - start) + start);
+                    
+                    // Format numbers with commas
+                    element.textContent = value.toLocaleString();
+                    
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+            
+            // Animate stats when in viewport
+            function checkStatsAnimation() {
+                const statsSection = document.querySelector('.stats-preview');
+                if (!statsSection) return;
+                
+                const sectionTop = statsSection.getBoundingClientRect().top;
+                const sectionBottom = statsSection.getBoundingClientRect().bottom;
+                
+                // If section is in viewport and not animated yet
+                if (sectionTop < window.innerHeight && sectionBottom > 0 && !statsAnimated) {
+                    statsAnimated = true;
+                    
+                    statValues.forEach((element) => {
+                        const target = parseInt(element.getAttribute('data-target'));
+                        animateValue(element, 0, target, 2000);
+                    });
+                }
+            }
+            
+            // Scroll event listener for animations
+            window.addEventListener('scroll', checkStatsAnimation);
+            
+            // Initial check on page load
+            checkStatsAnimation();
+            
+            // Add hover effect to buttons
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Improved book carousel for touch devices
+            const bookCarousel = document.querySelector('.book-carousel');
+            if (bookCarousel) {
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+                
+                bookCarousel.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    bookCarousel.style.cursor = 'grabbing';
+                    startX = e.pageX - bookCarousel.offsetLeft;
+                    scrollLeft = bookCarousel.scrollLeft;
+                });
+                
+                bookCarousel.addEventListener('mouseleave', () => {
+                    isDown = false;
+                    bookCarousel.style.cursor = 'grab';
+                });
+                
+                bookCarousel.addEventListener('mouseup', () => {
+                    isDown = false;
+                    bookCarousel.style.cursor = 'grab';
+                });
+                
+                bookCarousel.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - bookCarousel.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    bookCarousel.scrollLeft = scrollLeft - walk;
+                });
+                
+                // Touch events for mobile
+                bookCarousel.addEventListener('touchstart', (e) => {
+                    isDown = true;
+                    startX = e.touches[0].pageX - bookCarousel.offsetLeft;
+                    scrollLeft = bookCarousel.scrollLeft;
+                });
+                
+                bookCarousel.addEventListener('touchend', () => {
+                    isDown = false;
+                });
+                
+                bookCarousel.addEventListener('touchmove', (e) => {
+                    if (!isDown) return;
+                    const x = e.touches[0].pageX - bookCarousel.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    bookCarousel.scrollLeft = scrollLeft - walk;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Owl - Library</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-50: #FCF6F4;
+            --primary-100: #F7ECEA;
+            --primary-200: #F4D9D7;
+            --primary-300: #EBBAB8;
+            --primary-400: #DE938E;
+            --primary-500: #CE6855;
+            --primary-600: #B44446;
+            --primary-700: #9A363A;
+            --primary-800: #822F35;
+            --gray-100: #f5f5f5;
+            --gray-200: #eeeeee;
+            --gray-300: #e0e0e0;
+            --gray-400: #bdbdbd;
+            --gray-500: #9e9e9e;
+            --gray-600: #757575;
+            --gray-700: #616161;
+            --gray-800: #424242;
+            --gray-900: #212121;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+            
+            /* Theme variables */
+            --bg-primary: var(--primary-50);
+            --bg-secondary: white;
+            --text-primary: var(--gray-800);
+            --text-secondary: var(--gray-600);
+            --border-color: var(--gray-300);
+            --card-bg: white;
+            --progress-bg: var(--gray-200);
+        }
+
+        /* Dark theme */
+        .dark-theme {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #404040;
+            --card-bg: #2d2d2d;
+            --progress-bg: #404040;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(to bottom, var(--primary-700), var(--primary-800));
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: var(--transition);
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .logo-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            color: var(--primary-200);
+            position: relative;
+        }
+
+        
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .logo span {
+            color: var(--primary-200);
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0 15px;
+        }
+
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .nav-links i {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Cute Theme Toggle Button */
+        .theme-toggle-container {
+            margin-top: auto;
+            padding: 0 20px;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            width: 100%;
+            padding: 12px 16px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .theme-toggle:active {
+            transform: translateY(0);
+        }
+
+        .theme-toggle i {
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover i {
+            transform: scale(1.1);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 30px;
+            transition: var(--transition);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h2 {
+            font-size: 1.8rem;
+            color: var(--primary-600);
+            font-weight: 600;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--primary-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* Mood Selector */
+        .mood-selector {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow);
+        }
+
+        .mood-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            color: var(--primary-600);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .mood-title i {
+            margin-right: 12px;
+            color: var(--primary-500);
+        }
+
+        .mood-options {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .mood-option {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .mood-option:hover {
+            background-color: var(--primary-500);
+            color: white;
+            border-color: var(--primary-500);
+        }
+
+        .mood-option.active {
+            background-color: var(--primary-600);
+            color: white;
+            border-color: var(--primary-600);
+        }
+
+        .mood-option i {
+            margin-right: 8px;
+        }
+
+        /* Library Container */
+        .library-container {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .library-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            color: var(--primary-600);
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 16px;
+        }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            color: var(--text-secondary);
+        }
+
+        .search-box input {
+            padding: 10px 16px 10px 40px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            width: 240px;
+            font-size: 14px;
+        }
+
+        .filter-select {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        /* Interactive Book Cards */
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .book-card {
+            position: relative;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            height: 380px;
+        }
+
+        .book-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .book-cover {
+            height: 280px;
+            background: linear-gradient(135deg, var(--primary-400), var(--primary-600));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .book-card:hover .book-cover img {
+            transform: scale(1.1);
+        }
+
+        .progress-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: var(--primary-600);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .book-info {
+            padding: 16px;
+            position: relative;
+            z-index: 1;
+            background: var(--card-bg);
+        }
+
+        .book-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-author {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .rating i {
+            color: #FFC107;
+            font-size: 12px;
+        }
+
+        /* Hover Details Overlay */
+        .book-hover-details {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(130, 47, 53, 0.95), rgba(180, 68, 70, 0.9));
+            color: white;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
+        }
+
+        .book-card:hover .book-hover-details {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .hover-header h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .hover-author {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 12px;
+        }
+
+        .hover-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .hover-genre, .hover-pages {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .hover-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .hover-rating i {
+            color: #FFD700;
+            font-size: 14px;
+        }
+
+        .hover-description {
+            font-size: 13px;
+            line-height: 1.4;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .hover-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .read-btn, .details-btn {
+            flex: 1;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .read-btn {
+            background: white;
+            color: var(--primary-600);
+        }
+
+        .read-btn:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .details-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .details-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Category Section */
+        .category-section {
+            margin-bottom: 40px;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .category-title {
+            color: var(--primary-600);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .view-all {
+            color: var(--primary-600);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .view-all i {
+            margin-left: 6px;
+            font-size: 12px;
+        }
+
+        /* Mood Recommendations Section */
+        .mood-recommendations {
+            background: linear-gradient(135deg, var(--primary-100), var(--primary-200));
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+            border: 2px solid var(--primary-300);
+            display: none;
+        }
+
+        .mood-recommendations.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mood-recommendations-title {
+            color: var(--primary-700);
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mood-recommendations-title i {
+            color: var(--primary-600);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 200px;
+            }
+            .main-content {
+                margin-left: 200px;
+            }
+            .book-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                padding: 10px;
+            }
+            .logo h1, .nav-links span {
+                display: none;
+            }
+            .main-content {
+                margin-left: 70px;
+            }
+            .library-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .search-filter {
+                width: 100%;
+            }
+            .search-box input {
+                width: 100%;
+            }
+            .book-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            .mood-options {
+                justify-content: center;
+            }
+            .book-card {
+                height: 350px;
+            }
+            .book-cover {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .book-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            .mood-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="logo">
+            <h1>Reading <span>Owl</span></h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="home.html"><i class="fas fa-home"></i> <span>Home</span></a></li>
+            <li><a href="stats.html"><i class="fas fa-chart-bar"></i> <span>Stats</span></a></li>
+            <li><a href="reading.html" class="active"><i class="fas fa-book-open"></i> <span>Reading</span></a></li>
+            <li><a href="community.html"><i class="fas fa-users"></i> <span>Community</span></a></li>
+            <li><a href="library.html" class="active"><i class="fas fa-book"></i> <span>Library</span></a></li>
+            <li><a href="challenges.html"><i class="fas fa-trophy"></i> <span>Challenges</span></a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+        </ul>
+        
+        <!-- Cute Theme Toggle Button -->
+        <div class="theme-toggle-container">
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+                <span>Dark Mode</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h2>My Library</h2>
+            <div class="user-profile">
+                <div class="user-avatar">JS</div>
+            </div>
+        </div>
+
+        <!-- Mood Selector -->
+        <div class="mood-selector">
+            <h3 class="mood-title">
+                <i class="fas fa-smile"></i>
+                How are you feeling today?
+            </h3>
+            <div class="mood-options">
+                <div class="mood-option" data-mood="adventurous">
+                    <i class="fas fa-hiking"></i>
+                    Adventurous
+                </div>
+                <div class="mood-option" data-mood="romantic">
+                    <i class="fas fa-heart"></i>
+                    Romantic
+                </div>
+                <div class="mood-option" data-mood="mysterious">
+                    <i class="fas fa-search"></i>
+                    Mysterious
+                </div>
+                <div class="mood-option" data-mood="inspired">
+                    <i class="fas fa-lightbulb"></i>
+                    Inspired
+                </div>
+                <div class="mood-option" data-mood="relaxed">
+                    <i class="fas fa-couch"></i>
+                    Relaxed
+                </div>
+                <div class="mood-option" data-mood="thoughtful">
+                    <i class="fas fa-brain"></i>
+                    Thoughtful
+                </div>
+            </div>
+        </div>
+
+        <!-- Mood Recommendations -->
+        <div class="mood-recommendations" id="moodRecommendations">
+            <h3 class="mood-recommendations-title">
+                <i class="fas fa-star"></i>
+                <span id="moodTitle">Recommended Books</span>
+            </h3>
+            <div class="book-grid" id="moodBooks">
+                <!-- Mood-based books will be loaded here -->
+            </div>
+        </div>
+
+        <div class="library-container">
+            <div class="library-header">
+                <h2 class="section-title">Discover Books</h2>
+                <div class="search-filter">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search books...">
+                    </div>
+                    <select class="filter-select" id="genreFilter">
+                        <option value="all">All Genres</option>
+                        <option value="fantasy">Fantasy</option>
+                        <option value="mystery">Mystery</option>
+                        <option value="romance">Romance</option>
+                        <option value="thriller">Thriller</option>
+                        <option value="fiction">Fiction</option>
+                        <option value="self-help">Self-Help</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- All Books Section -->
+            <div class="category-section">
+                <div class="category-header">
+                    <h3 class="category-title">All Books</h3>
+                    <span class="book-count" id="bookCount">45 items</span>
+                </div>
+                <div class="book-grid" id="bookCollection">
+                    <!-- Books will be loaded here dynamically -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Theme functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            const themeText = themeToggle.querySelector('span');
+            const body = document.body;
+
+            // Initialize theme from localStorage
+            function initializeTheme() {
+                const savedTheme = localStorage.getItem('readingOwlTheme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                    body.classList.add('dark-theme');
+                    themeIcon.className = 'fas fa-sun';
+                    themeText.textContent = 'Light Mode';
+                } else {
+                    body.classList.remove('dark-theme');
+                    themeIcon.className = 'fas fa-moon';
+                    themeText.textContent = 'Dark Mode';
+                }
+            }
+
+            // Theme toggle functionality
+            themeToggle.addEventListener('click', function() {
+                if (body.classList.contains('dark-theme')) {
+                    body.classList.remove('dark-theme');
+                    themeIcon.className = 'fas fa-moon';
+                    themeText.textContent = 'Dark Mode';
+                    localStorage.setItem('readingOwlTheme', 'light');
+                } else {
+                    body.classList.add('dark-theme');
+                    themeIcon.className = 'fas fa-sun';
+                    themeText.textContent = 'Light Mode';
+                    localStorage.setItem('readingOwlTheme', 'dark');
+                }
+            });
+
+            // Initialize theme
+            initializeTheme();
+
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                if (!localStorage.getItem('readingOwlTheme')) {
+                    if (e.matches) {
+                        body.classList.add('dark-theme');
+                        themeIcon.className = 'fas fa-sun';
+                        themeText.textContent = 'Light Mode';
+                    } else {
+                        body.classList.remove('dark-theme');
+                        themeIcon.className = 'fas fa-moon';
+                        themeText.textContent = 'Dark Mode';
+                    }
+                }
+            });
+
+            // Mood-based recommendations mapping
+            const MOOD_RECOMMENDATIONS = {
+                adventurous: ['fantasy', 'adventure', 'thriller', 'mystery'],
+                romantic: ['romance', 'contemporary', 'fiction'],
+                mysterious: ['mystery', 'thriller', 'crime'],
+                inspired: ['self-help', 'biography', 'history', 'philosophy'],
+                relaxed: ['fiction', 'contemporary', 'literary'],
+                thoughtful: ['philosophy', 'literary', 'classics', 'biography']
+            };
+
+            // Book Data - All books from your images
+            const books = [
+                // Row 1
+                {
+                    id: 1,
+                    title: "A Good Girl's Guide to Murder",
+                    author: "Holly Jackson",
+                    cover: "/images/books/a good girls guide to murder by Holly Jackson.jpeg",
+                    rating: 4.5,
+                    genre: "Mystery, Thriller",
+                    pages: 384,
+                    description: "A student investigates a closed murder case for her final project, uncovering secrets that someone will kill to keep hidden.",
+                    tags: ["mystery", "thriller", "young adult"]
+                },
+                {
+                    id: 2,
+                    title: "A Thousand Splendid Suns",
+                    author: "Khaled Hosseini",
+                    cover: "/images/books/A thousand splendid suns.jpeg",
+                    rating: 4.8,
+                    genre: "Fiction, Historical",
+                    pages: 384,
+                    description: "A breathtaking story set against the volatile events of Afghanistan's last thirty years.",
+                    tags: ["fiction", "historical", "drama"]
+                },
+                {
+                    id: 3,
+                    title: "And The Mountains Echoed",
+                    author: "Khaled Hosseini",
+                    cover: "/images/books/And The Mountains Echoed, Khaled Hosseini.jpeg",
+                    rating: 4.4,
+                    genre: "Fiction, Family",
+                    pages: 402,
+                    description: "A profound novel about how we love, how we take care of one another, and how the choices we make resonate through generations.",
+                    tags: ["fiction", "family", "drama"]
+                },
+                {
+                    id: 4,
+                    title: "As Good As Dead",
+                    author: "Holly Jackson",
+                    cover: "/images/books/As Good As Dead- Holly Jackson.jpeg",
+                    rating: 4.6,
+                    genre: "Mystery, Thriller",
+                    pages: 434,
+                    description: "The final book in the A Good Girl's Guide to Murder series, where Pip finds herself in grave danger.",
+                    tags: ["mystery", "thriller", "young adult"]
+                },
+                {
+                    id: 5,
+                    title: "As Long As the Lemon Trees Grow",
+                    author: "Zoulfa Katouh",
+                    cover: "/images/books/as long as the lemon tree grows.jpeg",
+                    rating: 4.7,
+                    genre: "Fiction, Historical",
+                    pages: 432,
+                    description: "A haunting and beautiful novel about love, loss, and the power of memory set against the Syrian revolution.",
+                    tags: ["fiction", "historical", "romance"]
+                },
+                {
+                    id: 6,
+                    title: "If He Had Been With Me",
+                    author: "Laura Nowlin",
+                    cover: "/images/books/If He Had Been With Me by Laura Nowlin.jpeg",
+                    rating: 4.2,
+                    genre: "Collection, Fiction",
+                    pages: 280,
+                    description: "A curated collection of stories and essays from the Bloomsbury literary tradition.",
+                    tags: ["fiction", "collection", "literary"]
+                },
+                {
+                    id: 7,
+                    title: "Flawless",
+                    author: "Elsie Silver",
+                    cover: "/images/books/Flawless.jpeg",
+                    rating: 4.3,
+                    genre: "Romance, Contemporary",
+                    pages: 368,
+                    description: "A steamy contemporary romance about finding love in unexpected places.",
+                    tags: ["romance", "contemporary"]
+                },
+                {
+                    id: 8,
+                    title: "Good Girl, Bad Blood",
+                    author: "Holly Jackson",
+                    cover: "/images/books/Good Girl, Bad Blood.jpeg",
+                    rating: 4.5,
+                    genre: "Mystery, Thriller",
+                    pages: 401,
+                    description: "Pip is not a detective anymore, but when someone goes missing, she can't help but investigate.",
+                    tags: ["mystery", "thriller", "young adult"]
+                },
+                {
+                    id: 9,
+                    title: "Harry Potter and the Deathly Hallows",
+                    author: "J.K. Rowling",
+                    cover: "/images/books/Harry potter and the deathly hallows.jpeg",
+                    rating: 4.9,
+                    genre: "Fantasy, Adventure",
+                    pages: 607,
+                    description: "Harry, Ron, and Hermione set out on their final mission to find and destroy Voldemort's remaining Horcruxes.",
+                    tags: ["fantasy", "adventure", "magic"]
+                },
+                {
+                    id: 10,
+                    title: "Harry Potter and the Half-Blood Prince",
+                    author: "J.K. Rowling",
+                    cover: "/images/books/harry potter and the half blood prince.jpeg",
+                    rating: 4.8,
+                    genre: "Fantasy, Adventure",
+                    pages: 607,
+                    description: "As Harry Potter begins his sixth year at Hogwarts, he discovers an old book marked as 'the property of the Half-Blood Prince'.",
+                    tags: ["fantasy", "adventure", "magic"],
+                    progress: 65
+                },
+                {
+                    id: 11,
+                    title: "Harry Potter and the Philosopher's Stone",
+                    author: "J.K. Rowling",
+                    cover: "/images/books/Harry Potter and the philosopher's stone.jpeg",
+                    rating: 4.8,
+                    genre: "Fantasy, Adventure",
+                    pages: 320,
+                    description: "Harry Potter discovers he's a wizard and begins his journey at Hogwarts School of Witchcraft and Wizardry.",
+                    tags: ["fantasy", "adventure", "magic"]
+                },
+                // Row 2
+                {
+                    id: 12,
+                    title: "Harry Potter and the Prisoner of Azkaban",
+                    author: "J.K. Rowling",
+                    cover: "/images/books/harry potter and the prisoner of azkaban.jpeg",
+                    rating: 4.9,
+                    genre: "Fantasy, Adventure",
+                    pages: 435,
+                    description: "Harry's third year at Hogwarts is marked by the escape of Sirius Black from Azkaban prison.",
+                    tags: ["fantasy", "adventure", "magic"]
+                },
+                {
+                    id: 13,
+                    title: "Hyperfocus",
+                    author: "Chris Bailey",
+                    cover: "/images/books/hyperfocus.jpeg",
+                    rating: 4.2,
+                    genre: "Self-Help, Productivity",
+                    pages: 278,
+                    description: "How to manage your attention to be more productive and creative in the age of distraction.",
+                    tags: ["self-help", "productivity", "non-fiction"]
+                },
+                {
+                    id: 14,
+                    title: "The Kite Runner",
+                    author: "Khaled Hosseini",
+                    cover: "/images/books/Khaled Hosseini - The kite runner.jpeg",
+                    rating: 4.7,
+                    genre: "Fiction, Historical",
+                    pages: 371,
+                    description: "An unforgettable story of friendship, betrayal, and redemption set in Afghanistan.",
+                    tags: ["fiction", "historical", "drama"]
+                },
+                {
+                    id: 15,
+                    title: "Kill Joy",
+                    author: "Holly Jackson",
+                    cover: "/images/books/Kill Joy by Holly Jackson.jpeg",
+                    rating: 4.3,
+                    genre: "Mystery, Thriller",
+                    pages: 312,
+                    description: "A standalone mystery novel from the bestselling author of A Good Girl's Guide to Murder.",
+                    tags: ["mystery", "thriller"]
+                },
+                {
+                    id: 16,
+                    title: "Not Quite Dead Yet",
+                    author: "Holly Jackson",
+                    cover: "/images/books/Not quite dead yet Holly Jackson.jpeg",
+                    rating: 4.2,
+                    genre: "Mystery, Thriller",
+                    pages: 312,
+                    description: "A thrilling mystery that keeps you guessing until the very end.",
+                    tags: ["mystery", "thriller"]
+                },
+                {
+                    id: 17,
+                    title: "Read People Like a Book",
+                    author: "Patrick King",
+                    cover: "/images/books/Read people like a book by Patrick King.jpeg",
+                    rating: 3.8,
+                    genre: "Self-Help, Psychology",
+                    pages: 245,
+                    description: "Learn to read body language, understand human psychology, and interpret social cues.",
+                    tags: ["self-help", "psychology", "non-fiction"]
+                },
+                {
+                    id: 18,
+                    title: "Royally Rearranged",
+                    author: "Emma St. Clair",
+                    cover: "/images/books/royally rearranged by emma st_ clair.jpeg",
+                    rating: 4.3,
+                    genre: "Romance, Contemporary",
+                    pages: 298,
+                    description: "A delightful romantic comedy about finding love in the most unexpected circumstances.",
+                    tags: ["romance", "contemporary", "comedy"]
+                },
+                {
+                    id: 19,
+                    title: "Save Me",
+                    author: "Mona Kasten",
+                    cover: "/images/books/Save Me- mona katsen.jpeg",
+                    rating: 4.0,
+                    genre: "Romance, New Adult",
+                    pages: 289,
+                    description: "The first book in an emotional new adult romance series about love and healing.",
+                    tags: ["romance", "new adult", "contemporary"]
+                },
+                {
+                    id: 20,
+                    title: "Save Us",
+                    author: "Mona Kasten",
+                    cover: "/images/books/save us-mona katsen.jpeg",
+                    rating: 4.2,
+                    genre: "Romance, New Adult",
+                    pages: 305,
+                    description: "The second book in the compelling Save Me series continues the emotional journey.",
+                    tags: ["romance", "new adult", "contemporary"]
+                },
+                {
+                    id: 21,
+                    title: "Save You",
+                    author: "Mona Kasten",
+                    cover: "/images/books/save you - mona katsen.jpeg",
+                    rating: 4.3,
+                    genre: "Romance, New Adult",
+                    pages: 318,
+                    description: "The final installment in the Save Me trilogy brings the emotional story to a satisfying conclusion.",
+                    tags: ["romance", "new adult", "contemporary"]
+                },
+                // Row 3
+                {
+                    id: 22,
+                    title: "Sea Prayer",
+                    author: "Khaled Hosseini",
+                    cover: "/images/books/Sea Prayer, Khaled Hosseini.jpeg",
+                    rating: 4.6,
+                    genre: "Fiction, Poetry",
+                    pages: 48,
+                    description: "A short, powerful, illustrated book written as a letter from a father to his son on the eve of their journey.",
+                    tags: ["fiction", "poetry", "historical"]
+                },
+                {
+                    id: 23,
+                    title: "She Wore Red Trainers",
+                    author: "Na'ima B. Robert",
+                    cover: "/images/books/She Wore Red Trainers.jpeg",
+                    rating: 4.1,
+                    genre: "Romance, Young Adult",
+                    pages: 289,
+                    description: "A modern Muslim love story about faith, family, and finding your place in the world.",
+                    tags: ["romance", "young adult", "contemporary"]
+                },
+                {
+                    id: 24,
+                    title: "The Alchemist",
+                    author: "Paulo Coelho",
+                    cover: "/images/books/The Alchemist.jpeg",
+                    rating: 4.7,
+                    genre: "Fiction, Inspirational",
+                    pages: 208,
+                    description: "A mystical story of Santiago, an Andalusian shepherd boy who yearns to travel in search of a worldly treasure.",
+                    tags: ["fiction", "inspirational", "philosophy"]
+                },
+                {
+                    id: 25,
+                    title: "The Art of Thinking Clearly",
+                    author: "Rolf Dobelli",
+                    cover: "/images/books/The Art of Thinking Clearly by Rolf Dobelli.jpeg",
+                    rating: 4.2,
+                    genre: "Self-Help, Psychology",
+                    pages: 384,
+                    description: "Learn to recognize and avoid cognitive biases that cloud your judgment and decision-making.",
+                    tags: ["self-help", "psychology", "non-fiction"]
+                },
+                {
+                    id: 26,
+                    title: "The Heart of a Woman",
+                    author: "Maya Angelou",
+                    cover: "/images/books/The heart of a woman.jpeg",
+                    rating: 4.5,
+                    genre: "Autobiography, Memoir",
+                    pages: 336,
+                    description: "The fourth volume of Maya Angelou's extraordinary autobiography continues her inspiring life story.",
+                    tags: ["autobiography", "memoir", "non-fiction"]
+                },
+                {
+                    id: 27,
+                    title: "The Housemaid",
+                    author: "Freida McFadden",
+                    cover: "/images/books/the housemaid.jpeg",
+                    rating: 4.4,
+                    genre: "Thriller, Mystery",
+                    pages: 352,
+                    description: "A psychological thriller about a maid who discovers dark secrets in the household where she works.",
+                    tags: ["thriller", "mystery", "psychological"]
+                },
+                {
+                    id: 28,
+                    title: "The Let Them Theory",
+                    author: "Mel Robbins",
+                    cover: "/images/books/The Let Them Theory.jpeg",
+                    rating: 4.0,
+                    genre: "Self-Help, Psychology",
+                    pages: 256,
+                    description: "A collection of essays on modern psychology and personal development strategies.",
+                    tags: ["self-help", "psychology", "non-fiction"]
+                },
+                {
+                    id: 29,
+                    title: "The Mountain Is You",
+                    author: "Brianna Wiest",
+                    cover: "/images/books/The Mountain is You.jpeg",
+                    rating: 4.3,
+                    genre: "Self-Help, Psychology",
+                    pages: 240,
+                    description: "Transforming self-sabotage into self-mastery through practical psychology and mindfulness.",
+                    tags: ["self-help", "psychology", "mindfulness"]
+                },
+                {
+                    id: 30,
+                    title: "Chronicles of Narnia: The Witch,The Lion, And The Wardrobe",
+                    author: "C.S.Lewis",
+                    cover: "/images/books/The Lion, the Witch, and the Wardrobe.jpeg",
+                    rating: 4.5,
+                    genre: "Fiction",
+                    pages: 320,
+                    description: "Learn how to use the power of your subconscious mind to improve your life and achieve your goals.",
+                    tags: ["Fiction"]
+                },
+                {
+                    id: 31,
+                    title: "The Reappearance of Rachel Price",
+                    author: "Holly Jackson",
+                    cover: "/images/books/The Reappearance of Rachel Price by Holly Jackson.jpeg",
+                    rating: 4.4,
+                    genre: "Mystery, Thriller",
+                    pages: 416,
+                    description: "A gripping new mystery from the bestselling author about a woman who reappears years after being presumed dead.",
+                    tags: ["mystery", "thriller", "suspense"]
+                },
+                // Row 4
+                {
+                    id: 32,
+                    title: "The Spanish Love Deception",
+                    author: "Elena Armas",
+                    cover: "/images/books/the spanish love deception.jpeg",
+                    rating: 3.9,
+                    genre: "Romance, Anthology",
+                    pages: 267,
+                    description: "A collection of romantic short stories from various contemporary romance authors.",
+                    tags: ["romance", "anthology", "contemporary"]
+                },
+                {
+                    id: 33,
+                    title: "The Subtle Art of Not Giving a F*ck",
+                    author: "Mark Manson",
+                    cover: "/images/books/The Subtle Art of not Giving A F_ck by Mark Manson.jpeg",
+                    rating: 4.2,
+                    genre: "Self-Help, Nonfiction",
+                    pages: 224,
+                    description: "A counterintuitive approach to living a good life, focusing on what truly matters.",
+                    tags: ["self-help", "non-fiction", "philosophy"]
+                },
+                {
+                    id: 34,
+                    title: "Chronicles of Narnia:The silver Chair",
+                    author: "David Lagercrantz",
+                    cover: "/images/books/The Silver Chair.jpeg",
+                    rating: 4.1,
+                    genre: "Thriller, Mystery",
+                    pages: 400,
+                    description: "A continuation of Stieg Larsson's Millennium series featuring Lisbeth Salander.",
+                    tags: ["thriller", "mystery", "crime"]
+                },
+                {
+                    id: 35,
+                    title: "They Both Die At The End ",
+                    author: "Adam Silvera",
+                    cover: "/images/books/They Both Die At The End by Adam Silvera.jpeg",
+                    rating: 4.6,
+                    genre: "Yound Adult, Science fiction",
+                    pages: 304,
+                    description: "a young adult novel about two strangers, Mateo and Rufus, who are notified by Death-Cast that they will die within 24 hours.",
+                    tags: ["fiction", "fantasy", "philosophy"]
+                },
+                {
+                    id: 36,
+                    title: "Wild Love",
+                    author: "Elsie Silver",
+                    cover: "/images/books/Wild Love.jpeg",
+                    rating: 4.0,
+                    genre: "Romance, Contemporary",
+                    pages: 289,
+                    description: "A collection of wild, passionate love stories that explore the boundaries of romance.",
+                    tags: ["romance", "contemporary", "anthology"]
+                },
+                {
+                    id: 37,
+                    title: "Chronicles of Narnia: The Caspian Prince",
+                    author: "C.S.Lewis",
+                    cover:"/images/books/narnia- the caspian prince.jpeg",
+                    rating:"4.3",
+                    genre:"Fiction,Fantasy",
+                    pages:450,
+                    description:"",
+                    tags: ["fiction","fantasy"]
+                },
+                {
+                    id: 38,
+                    title: "Chronicles of Narnia: The Dawn Treader",
+                    author: "C.S.Lewis",
+                    cover:"/images/books/narnia the dawn treader.jpeg",
+                    rating:"4.3",
+                    genre:"Fiction,Fantasy",
+                    pages:450,
+                    description:"",
+                    tags: ["fiction","fantasy"]
+                },
+                {
+                    id: 39,
+                    title: "Chronicles of Narnia: The Horse and His Boy",
+                    author: "C.S.Lewis",
+                    cover:"/images/books/narnia- the horse and his boy.jpeg",
+                    rating:"4.3",
+                    genre:"Fiction,Fantasy",
+                    pages:450,
+                    description:"",
+                    tags: ["fiction","fantasy"]
+                },
+                {
+                    id: 40,
+                    title: "Chronicles of Narnia: The Last Battle",
+                    author: "C.S.Lewis",
+                    cover:"/images/books/narnia- the last battle.jpeg",
+                    rating:"4.3",
+                    genre:"Fiction,Fantasy",
+                    pages:450,
+                    description:"",
+                    tags: ["fiction","fantasy"]
+                },
+                {
+                    id: 41,
+                    title: "Chronicles of Narnia: The Magician's Nephew",
+                    author: "C.S.Lewis",
+                    cover:"/images/books/The Magician's Nephew.jpeg",
+                    rating:"4.3",
+                    genre:"Fiction,Fantasy",
+                    pages:450,
+                    description:"",
+                    tags: ["fiction","fantasy"]
+                }
+            ];
+
+            // Generate star rating
+            function generateStars(rating) {
+                const stars = Math.round(rating);
+                let starsHTML = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= stars) {
+                        starsHTML += '<i class="fas fa-star"></i>';
+                    } else {
+                        starsHTML += '<i class="far fa-star"></i>';
+                    }
+                }
+                return starsHTML;
+            }
+
+            // Create book card
+            function createBookCard(book) {
+                const progressBadge = book.progress ? `<div class="progress-badge">${book.progress}%</div>` : '';
+                
+                return `
+                    <div class="book-card" data-book-id="${book.id}">
+                        <div class="book-cover">
+                            <img src="${book.cover}" alt="${book.title}" onerror="this.src='https://via.placeholder.com/200x280/822F35/FFFFFF?text=Cover+Not+Found'">
+                            ${progressBadge}
+                        </div>
+                        <div class="book-info">
+                            <h3 class="book-title">${book.title}</h3>
+                            <p class="book-author">${book.author}</p>
+                            <div class="book-meta">
+                                <span class="rating">${generateStars(book.rating)} ${book.rating}</span>
+                                <span class="pages">${book.pages}p</span>
+                            </div>
+                        </div>
+                        <div class="book-hover-details">
+                            <div class="hover-header">
+                                <h4>${book.title}</h4>
+                                <p class="hover-author">By ${book.author}</p>
+                            </div>
+                            <div class="hover-content">
+                                <div class="hover-meta">
+                                    <p class="hover-genre">${book.genre}</p>
+                                    <p class="hover-pages">${book.pages} pages</p>
+                                </div>
+                                <div class="hover-rating">
+                                    ${generateStars(book.rating)}
+                                    <span>${book.rating}/5</span>
+                                </div>
+                                <p class="hover-description">${book.description}</p>
+                            </div>
+                            <div class="hover-actions">
+                                <button class="read-btn" onclick="openBookReader(${book.id})">
+                                    <i class="fas fa-play"></i>
+                                    Read Now
+                                </button>
+                                <button class="details-btn" onclick="showBookDetails(${book.id})">
+                                    <i class="fas fa-info-circle"></i>
+                                    Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Load books
+            function loadBooks(booksToLoad = books, containerId = 'bookCollection') {
+                const bookCollection = document.getElementById(containerId);
+                bookCollection.innerHTML = '';
+                
+                booksToLoad.forEach(book => {
+                    const bookCard = createBookCard(book);
+                    bookCollection.innerHTML += bookCard;
+                });
+
+                // Update book count
+                if (containerId === 'bookCollection') {
+                    document.getElementById('bookCount').textContent = `${booksToLoad.length} items`;
+                }
+            }
+
+            // Get books by mood
+            function getBooksByMood(mood) {
+                const recommendedGenres = MOOD_RECOMMENDATIONS[mood] || [];
+                return books.filter(book => 
+                    recommendedGenres.some(genre => 
+                        book.tags.some(tag => tag.toLowerCase().includes(genre.toLowerCase()))
+                    )
+                ).slice(0, 6); // Show top 6 recommendations
+            }
+
+            // Show mood recommendations
+            function showMoodRecommendations(mood) {
+                const moodBooks = getBooksByMood(mood);
+                const moodTitle = document.getElementById('moodTitle');
+                const moodRecommendations = document.getElementById('moodRecommendations');
+                
+                moodTitle.textContent = `Recommended for ${mood} mood`;
+                loadBooks(moodBooks, 'moodBooks');
+                moodRecommendations.classList.add('active');
+                
+                // Scroll to recommendations
+                moodRecommendations.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                const filteredBooks = books.filter(book => 
+                    book.title.toLowerCase().includes(query) ||
+                    book.author.toLowerCase().includes(query) ||
+                    book.genre.toLowerCase().includes(query)
+                );
+                loadBooks(filteredBooks);
+            });
+
+            // Genre filter functionality
+            const genreFilter = document.getElementById('genreFilter');
+            genreFilter.addEventListener('change', function() {
+                const selectedGenre = this.value;
+                
+                if (selectedGenre === 'all') {
+                    loadBooks(books);
+                } else {
+                    const filteredBooks = books.filter(book => 
+                        book.genre.toLowerCase().includes(selectedGenre.toLowerCase()) ||
+                        book.tags.some(tag => tag.toLowerCase().includes(selectedGenre.toLowerCase()))
+                    );
+                    loadBooks(filteredBooks);
+                }
+            });
+
+            // Mood selection
+            const moodOptions = document.querySelectorAll('.mood-option');
+            moodOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    moodOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const mood = this.dataset.mood;
+                    showMoodRecommendations(mood);
+                });
+            });
+
+            // Initialize books
+            loadBooks();
+        });
+
+        // Mock functions for book interactions
+        function openBookReader(bookId) {
+            alert(`Opening book reader for book ID: ${bookId}\nIn a real implementation, this would open the EPUB reader.`);
+        }
+
+        function showBookDetails(bookId) {
+            alert(`Showing detailed information for book ID: ${bookId}\nIn a real implementation, this would open a detailed book modal.`);
+        }
+    </script>
+</body>
+</html>

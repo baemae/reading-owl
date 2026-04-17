@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forgot Password - Reading Owl</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    :root {
+      --chestnut-50: #FCF6F4;
+      --chestnut-100: #F8ECEA;
+      --chestnut-200: #F4D9D7;
+      --chestnut-300: #EBBAB8;
+      --chestnut-400: #DE938E;
+      --chestnut-500: #CE6865;
+      --chestnut-600: #B44446;
+      --chestnut-700: #9A363A;
+      --chestnut-800: #822F35;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--chestnut-600) 0%, var(--chestnut-800) 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .auth-container {
+      display: flex;
+      max-width: 1000px;
+      width: 100%;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    .auth-image {
+      flex: 1;
+      background: linear-gradient(rgba(180, 68, 70, 0.7), rgba(130, 47, 53, 0.7)), url('https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+
+    .auth-image h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .auth-image p {
+      font-size: 1.1rem;
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    .owl-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      color: var(--chestnut-200);
+      filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+    }
+
+    .auth-form {
+      flex: 1;
+      padding: 50px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: var(--chestnut-50);
+    }
+
+    .auth-form h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: var(--chestnut-800);
+    }
+
+    .subtitle {
+      color: var(--chestnut-700);
+      margin-bottom: 30px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-group i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--chestnut-600);
+    }
+
+    input {
+      width: 100%;
+      padding: 15px 15px 15px 45px;
+      border: 2px solid var(--chestnut-200);
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: white;
+    }
+
+    input:focus {
+      border-color: var(--chestnut-600);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(180, 68, 70, 0.1);
+    }
+
+    .btn {
+      background: linear-gradient(to right, var(--chestnut-600), var(--chestnut-800));
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(180, 68, 70, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--chestnut-200);
+      color: var(--chestnut-800);
+    }
+
+    .btn-secondary:hover {
+      background: var(--chestnut-300);
+      box-shadow: 0 5px 15px rgba(180, 68, 70, 0.2);
+    }
+
+    .links {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .links a {
+      color: var(--chestnut-600);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .links a:hover {
+      color: var(--chestnut-800);
+      text-decoration: underline;
+    }
+
+    .steps-container {
+      margin: 25px 0;
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .steps-container::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--chestnut-200);
+      z-index: 1;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .step-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--chestnut-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--chestnut-700);
+      font-weight: 600;
+      margin-bottom: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .step.active .step-circle {
+      background: var(--chestnut-600);
+      color: white;
+    }
+
+    .step-label {
+      font-size: 0.8rem;
+      color: var(--chestnut-700);
+      font-weight: 500;
+    }
+
+    .step.active .step-label {
+      color: var(--chestnut-800);
+      font-weight: 600;
+    }
+
+    .form-step {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .form-step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .success-message {
+      background: var(--chestnut-100);
+      border: 1px solid var(--chestnut-300);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .success-message i {
+      font-size: 3rem;
+      color: var(--chestnut-600);
+      margin-bottom: 15px;
+    }
+
+    .success-message h3 {
+      color: var(--chestnut-800);
+      margin-bottom: 10px;
+    }
+
+    .success-message p {
+      color: var(--chestnut-700);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .button-group .btn {
+      flex: 1;
+    }
+
+    .password-tips {
+      background: var(--chestnut-100);
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 20px;
+    }
+
+    .password-tips h4 {
+      color: var(--chestnut-800);
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    .password-tips ul {
+      padding-left: 20px;
+      color: var(--chestnut-700);
+      font-size: 0.9rem;
+    }
+
+    .password-tips li {
+      margin-bottom: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .auth-container {
+        flex-direction: column;
+      }
+      
+      .auth-image {
+        padding: 30px 20px;
+      }
+      
+      .auth-form {
+        padding: 30px 20px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container">
+    <!-- Left image section -->
+    <div class="auth-image">
+      <i class="fas fa-owl owl-icon"></i>
+      <h1>Reading Owl</h1>
+      <p>Reset your password and get back to your reading adventure. We'll help you secure your account quickly.</p>
+    </div>
+
+    <!-- Right form section -->
+    <div class="auth-form">
+      <h2>Reset Your Password</h2>
+      <p class="subtitle">Follow the steps to recover your account</p>
+
+      <!-- Progress Steps -->
+      <div class="steps-container">
+        <div class="step active" id="step1">
+          <div class="step-circle">1</div>
+          <div class="step-label">Enter Email</div>
+        </div>
+        <div class="step" id="step2">
+          <div class="step-circle">2</div>
+          <div class="step-label">Verify Code</div>
+        </div>
+        <div class="step" id="step3">
+          <div class="step-circle">3</div>
+          <div class="step-label">New Password</div>
+        </div>
+      </div>
+
+      <!-- Step 1: Email Input -->
+      <div class="form-step active" id="form-step1">
+        <form id="emailForm">
+          <div class="form-group">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="reset-email" placeholder="Enter your email address" required>
+          </div>
+          <button type="submit" class="btn">Send Reset Code</button>
+        </form>
+        <div class="links">
+          <p>Remember your password? <a href="login.html">Back to Login</a></p>
+        </div>
+      </div>
+
+      <!-- Step 2: Code Verification -->
+      <div class="form-step" id="form-step2">
+        <form id="codeForm">
+          <div class="form-group">
+            <i class="fas fa-shield-alt"></i>
+            <input type="text" id="reset-code" placeholder="Enter verification code" required maxlength="6">
+          </div>
+          <p style="font-size: 0.9rem; color: var(--chestnut-700); margin-bottom: 15px;">
+            We've sent a 6-digit code to your email. Please check your inbox and spam folder.
+          </p>
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="goToStep(1)">Back</button>
+            <button type="submit" class="btn">Verify Code</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 3: New Password -->
+      <div class="form-step" id="form-step3">
+        <form id="passwordForm">
+          <div class="form-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="new-password" placeholder="Enter new password" required>
+          </div>
+          <div class="form-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="confirm-password" placeholder="Confirm new password" required>
+          </div>
+          
+          <div class="password-tips">
+            <h4>Password Tips:</h4>
+            <ul>
+              <li>Use at least 8 characters</li>
+              <li>Include uppercase and lowercase letters</li>
+              <li>Add numbers and special characters</li>
+              <li>Avoid common words or personal information</li>
+            </ul>
+          </div>
+          
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="goToStep(2)">Back</button>
+            <button type="submit" class="btn">Reset Password</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Success Message -->
+      <div class="success-message" id="success-message">
+        <i class="fas fa-check-circle"></i>
+        <h3>Password Reset Successfully!</h3>
+        <p>Your password has been updated. You can now log in with your new password.</p>
+        <div class="button-group" style="margin-top: 20px;">
+          <a href="login.html" class="btn">Go to Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+
+    // Function to navigate between steps
+    function goToStep(step) {
+      // Hide current step
+      document.querySelector(`#form-step${currentStep}`).classList.remove('active');
+      document.querySelector(`#step${currentStep}`).classList.remove('active');
+      
+      // Show new step
+      document.querySelector(`#form-step${step}`).classList.add('active');
+      document.querySelector(`#step${step}`).classList.add('active');
+      
+      currentStep = step;
+    }
+
+    // Email form submission
+    document.getElementById('emailForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('reset-email').value;
+      
+      // Simple email validation
+      if (!email.includes('@') || !email.includes('.')) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+      
+      // In a real app, you would send the email to your backend
+      // For demo purposes, we'll just proceed to the next step
+      alert(`Reset code sent to ${email}. In a real application, this would be sent via email.`);
+      goToStep(2);
+    });
+
+    // Code verification form submission
+    document.getElementById('codeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const code = document.getElementById('reset-code').value;
+      
+      // Simple code validation
+      if (code.length !== 6 || isNaN(code)) {
+        alert('Please enter a valid 6-digit code.');
+        return;
+      }
+      
+      // In a real app, you would verify the code with your backend
+      // For demo purposes, we'll just proceed to the next step
+      goToStep(3);
+    });
+
+    // Password reset form submission
+    document.getElementById('passwordForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      
+      // Password validation
+      if (newPassword !== confirmPassword) {
+        alert('Passwords do not match. Please try again.');
+        return;
+      }
+      
+      if (newPassword.length < 8) {
+        alert('Password must be at least 8 characters long.');
+        return;
+      }
+      
+      // Check for password strength
+      let hasUpperCase = /[A-Z]/.test(newPassword);
+      let hasLowerCase = /[a-z]/.test(newPassword);
+      let hasNumbers = /\d/.test(newPassword);
+      let hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(newPassword);
+      
+      if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChar) {
+        alert('Password must include uppercase and lowercase letters, numbers, and special characters.');
+        return;
+      }
+      
+      // In a real app, you would send the new password to your backend
+      // For demo purposes, we'll show the success message
+      document.getElementById('form-step3').classList.remove('active');
+      document.getElementById('success-message').style.display = 'block';
+    });
+
+    // Add some interactive animations
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('focus', function() {
+        this.parentElement.style.transform = 'scale(1.02)';
+      });
+      
+      input.addEventListener('blur', function() {
+        this.parentElement.style.transform = 'scale(1)';
+      });
+    });
+
+    // Auto-advance to next input when code is entered
+    document.getElementById('reset-code').addEventListener('input', function() {
+      if (this.value.length === 6) {
+        document.getElementById('codeForm').dispatchEvent(new Event('submit'));
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Owl - Interactive Reader</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-50: #FCF6F4;
+            --primary-100: #F7ECEA;
+            --primary-200: #F4D9D7;
+            --primary-300: #EBBAB8;
+            --primary-400: #DE938E;
+            --primary-500: #CE6855;
+            --primary-600: #B44446;
+            --primary-700: #9A363A;
+            --primary-800: #822F35;
+            --gray-100: #f5f5f5;
+            --gray-200: #eeeeee;
+            --gray-300: #e0e0e0;
+            --gray-400: #bdbdbd;
+            --gray-500: #9e9e9e;
+            --gray-600: #757575;
+            --gray-700: #616161;
+            --gray-800: #424242;
+            --gray-900: #212121;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary-50: #1a1a1a;
+            --primary-100: #2d2d2d;
+            --primary-200: #3d3d3d;
+            --primary-300: #4d4d4d;
+            --primary-400: #5d5d5d;
+            --primary-500: #CE6855;
+            --primary-600: #B44446;
+            --primary-700: #9A363A;
+            --primary-800: #822F35;
+            --gray-100: #212121;
+            --gray-200: #2d2d2d;
+            --gray-300: #3d3d3d;
+            --gray-400: #5d5d5d;
+            --gray-500: #7d7d7d;
+            --gray-600: #9e9e9e;
+            --gray-700: #bdbdbd;
+            --gray-800: #e0e0e0;
+            --gray-900: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: var(--transition);
+        }
+
+        body {
+            background-color: var(--primary-50);
+            color: var(--gray-800);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(to bottom, var(--primary-700), var(--primary-800));
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: var(--transition);
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .logo span {
+            color: var(--primary-200);
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0 15px;
+        }
+
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .nav-links i {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Cute Theme Toggle Button */
+        .theme-toggle-container {
+            margin-top: auto;
+            padding: 0 20px;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            width: 100%;
+            padding: 12px 16px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .theme-toggle:active {
+            transform: translateY(0);
+        }
+
+        .theme-toggle i {
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover i {
+            transform: scale(1.1);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 30px;
+            transition: var(--transition);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h2 {
+            font-size: 1.8rem;
+            color: var(--primary-700);
+            font-weight: 600;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--primary-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* Book Info Section */
+        .book-info {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        [data-theme="dark"] .book-info {
+            background: var(--primary-100);
+        }
+
+        .book-cover-large {
+            width: 150px;
+            height: 200px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            flex-shrink: 0;
+        }
+
+        .book-details h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--primary-700);
+        }
+
+        .book-details .author {
+            font-size: 1.2rem;
+            color: var(--gray-600);
+            margin-bottom: 15px;
+        }
+
+        .book-details .description {
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Reading Controls */
+        .reading-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        [data-theme="dark"] .reading-controls {
+            background: var(--primary-100);
+        }
+
+        .control-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-600);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-700);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-600);
+            color: var(--primary-600);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-600);
+            color: white;
+        }
+
+        .font-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .font-controls label {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+
+        .font-controls select {
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--gray-300);
+            background-color: white;
+            color: var(--gray-800);
+        }
+
+        [data-theme="dark"] .font-controls select {
+            background-color: var(--primary-200);
+            border-color: var(--primary-300);
+            color: var(--gray-800);
+        }
+
+        /* Music Player */
+        .music-player {
+            background: white;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        [data-theme="dark"] .music-player {
+            background: var(--primary-100);
+        }
+
+        .music-info {
+            flex: 1;
+        }
+
+        .music-title {
+            font-weight: 600;
+            color: var(--primary-700);
+            margin-bottom: 5px;
+        }
+
+        .music-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .music-btn {
+            background: none;
+            border: none;
+            color: var(--primary-600);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .music-btn:hover {
+            color: var(--primary-700);
+            transform: scale(1.1);
+        }
+
+        /* Reading Content */
+        .reading-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            line-height: 1.8;
+            font-size: 18px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        [data-theme="dark"] .reading-content {
+            background: var(--primary-100);
+        }
+
+        .highlight {
+            background-color: #ffe49b;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        [data-theme="dark"] .highlight {
+            background-color: #ffd166;
+            color: #333;
+        }
+
+        /* Dictionary Popup */
+        .dictionary-popup {
+            display: none;
+            position: absolute;
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            max-width: 300px;
+            border: 1px solid var(--gray-300);
+        }
+
+        [data-theme="dark"] .dictionary-popup {
+            background: var(--primary-200);
+            border-color: var(--primary-300);
+        }
+
+        .dictionary-popup h4 {
+            margin-bottom: 10px;
+            color: var(--primary-700);
+        }
+
+        .dictionary-popup .meaning {
+            margin-bottom: 10px;
+            color: var(--gray-700);
+        }
+
+        .dictionary-popup .example {
+            font-style: italic;
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .close-popup {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--gray-600);
+        }
+
+        /* Translation Popup */
+        .translation-popup {
+            display: none;
+            position: absolute;
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            max-width: 300px;
+            border: 1px solid var(--gray-300);
+        }
+
+        [data-theme="dark"] .translation-popup {
+            background: var(--primary-200);
+            border-color: var(--primary-300);
+        }
+
+        .translation-popup h4 {
+            margin-bottom: 10px;
+            color: var(--primary-700);
+        }
+
+        .translation-popup .translated-text {
+            margin-bottom: 10px;
+            color: var(--gray-700);
+        }
+
+        /* Notes Section */
+        .notes-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+
+        [data-theme="dark"] .notes-section {
+            background: var(--primary-100);
+        }
+
+        .notes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .notes-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .note-item {
+            padding: 10px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .note-text {
+            flex: 1;
+        }
+
+        .note-highlight {
+            background-color: #ffe49b;
+            padding: 2px 4px;
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+
+        .delete-note {
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .delete-note:hover {
+            color: var(--primary-600);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-top: 20px;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        [data-theme="dark"] .progress-container {
+            background: var(--primary-100);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: var(--gray-300);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-500);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+                overflow: visible;
+            }
+            
+            .logo h1, .nav-links span {
+                display: none;
+            }
+            
+            .logo {
+                justify-content: center;
+                padding: 0 0 20px;
+            }
+            
+            .nav-links a {
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .nav-links i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .book-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .reading-controls {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .user-profile {
+                align-self: flex-end;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            
+            .nav-links {
+                display: flex;
+                justify-content: space-around;
+                padding: 0;
+            }
+            
+            .nav-links li {
+                margin-bottom: 0;
+            }
+            
+            .logo {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .theme-toggle-container {
+                display: none;
+            }
+        }
+
+        .user-profile-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .user-profile {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="logo">
+            <h1>Reading <span>Owl</span></h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="home.html"><i class="fas fa-home"></i> <span>Home</span></a></li>
+            <li><a href="stats.html"><i class="fas fa-chart-bar"></i> <span>Stats</span></a></li>
+            <li><a href="reading.html" class="active"><i class="fas fa-book-open"></i> <span>Reading</span></a></li>
+            <li><a href="community.html"><i class="fas fa-users"></i> <span>Community</span></a></li>
+            <li><a href="library.html"><i class="fas fa-book"></i> <span>Library</span></a></li>
+            <li><a href="challenges.html"><i class="fas fa-trophy"></i> <span>Challenges</span></a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+        </ul>
+        
+        <!-- Cute Dark Mode Toggle -->
+        <div class="theme-toggle-container">
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+                <span>Dark Mode</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h2>Reading: Harry Potter</h2>
+            <a href="settings.html" class="user-profile-link">
+                <div class="user-profile">
+                    <div class="user-avatar">JS</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Book Info -->
+        <div class="book-info">
+            <div class="book-cover-large">
+                <i class="fas fa-hat-wizard"></i>
+            </div>
+            <div class="book-details">
+                <h3>Harry Potter and the Sorcerer's Stone</h3>
+                <div class="author">by J.K. Rowling</div>
+                <div class="description">
+                    Harry Potter has never even heard of Hogwarts when the letters start dropping on the doormat at number four, Privet Drive. Addressed in green ink on yellowish parchment with a purple seal, they are swiftly confiscated by his grisly aunt and uncle. Then, on Harry's eleventh birthday, a great beetle-eyed giant of a man called Rubeus Hagrid bursts in with some astonishing news: Harry Potter is a wizard, and he has a place at Hogwarts School of Witchcraft and Wizardry. An incredible adventure is about to begin!
+                </div>
+                <div class="book-stats">
+                    <span><i class="fas fa-clock"></i> 65% completed</span>
+                    <span style="margin-left: 20px;"><i class="fas fa-bookmark"></i> Chapter 12</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Music Player -->
+        <div class="music-player">
+            <div class="music-info">
+                <div class="music-title">Reading Focus Playlist</div>
+                <div class="music-status">Paused</div>
+            </div>
+            <div class="music-controls">
+                <button id="prev-track" class="music-btn">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+                <button id="play-pause" class="music-btn">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button id="next-track" class="music-btn">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Reading Controls -->
+        <div class="reading-controls">
+            <div class="control-group">
+                <button id="read-aloud-btn" class="btn btn-primary">
+                    <i class="fas fa-volume-up"></i> Read Aloud
+                </button>
+                <button id="highlight-btn" class="btn btn-outline">
+                    <i class="fas fa-highlighter"></i> Highlight
+                </button>
+                <button id="translate-btn" class="btn btn-outline">
+                    <i class="fas fa-language"></i> Translate
+                </button>
+            </div>
+            <div class="control-group">
+                <div class="font-controls">
+                    <label for="font-size">Font Size:</label>
+                    <select id="font-size">
+                        <option value="16">Small</option>
+                        <option value="18" selected>Medium</option>
+                        <option value="20">Large</option>
+                        <option value="22">X-Large</option>
+                    </select>
+                </div>
+                <div class="font-controls">
+                    <label for="font-family">Font:</label>
+                    <select id="font-family">
+                        <option value="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" selected>Default</option>
+                        <option value="Georgia, serif">Serif</option>
+                        <option value="Arial, sans-serif">Sans-serif</option>
+                        <option value="'Courier New', monospace">Monospace</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reading Content -->
+        <div id="reading-text" class="reading-content">
+            <p>Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to say that they were perfectly normal, thank you very much. They were the last people you'd expect to be involved in anything strange or mysterious, because they just didn't hold with such nonsense.</p>
+            
+            <p>Mr. Dursley was the director of a firm called Grunnings, which made drills. He was a big, beefy man with hardly any neck, although he did have a very large mustache. Mrs. Dursley was thin and blonde and had nearly twice the usual amount of neck, which came in very useful as she spent so much of her time craning over garden fences, spying on the neighbors. The Dursleys had a small son called Dudley and in their opinion there was no finer boy anywhere.</p>
+            
+            <p>The Dursleys had everything they wanted, but they also had a secret, and their greatest fear was that somebody would discover it. They didn't think they could bear it if anyone found out about the Potters. Mrs. Potter was Mrs. Dursley's sister, but they hadn't met for several years; in fact, Mrs. Dursley pretended she didn't have a sister, because her sister and her good-for-nothing husband were as unDursleyish as it was possible to be. The Dursleys shuddered to think what the neighbors would say if the Potters arrived in the street. The Dursleys knew that the Potters had a small son, too, but they had never even seen him. This boy was another good reason for keeping the Potters away; they didn't want Dudley mixing with a child like that.</p>
+        </div>
+
+        <!-- Dictionary Popup -->
+        <div id="dictionary-popup" class="dictionary-popup">
+            <button class="close-popup">&times;</button>
+            <h4 id="word-title"></h4>
+            <div id="word-meaning" class="meaning"></div>
+            <div id="word-example" class="example"></div>
+        </div>
+
+        <!-- Translation Popup -->
+        <div id="translation-popup" class="translation-popup">
+            <button class="close-popup">&times;</button>
+            <h4>Translation</h4>
+            <div id="translated-text" class="translated-text"></div>
+            <div class="translation-controls">
+                <label for="target-language">Translate to:</label>
+                <select id="target-language">
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="it">Italian</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ru">Russian</option>
+                    <option value="ja">Japanese</option>
+                    <option value="zh">Chinese</option>
+                    <option value="ar">Arabic</option>
+                    <option value="hi">Hindi</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="notes-section">
+            <div class="notes-header">
+                <h3>Your Notes</h3>
+                <button id="add-note-btn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Note
+                </button>
+            </div>
+            <div id="notes-list" class="notes-list">
+                <!-- Notes will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <span>Reading Progress</span>
+                <span id="progress-percent">65%</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill" style="width: 65%"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme Toggle Functionality
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            const themeText = themeToggle.querySelector('span');
+            const htmlElement = document.documentElement;
+            
+            // Check for saved theme preference or default to light
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            
+            // Set the initial theme
+            htmlElement.setAttribute('data-theme', currentTheme);
+            updateToggleButton(currentTheme);
+            
+            function toggleTheme() {
+                const currentTheme = htmlElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                htmlElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateToggleButton(newTheme);
+            }
+            
+            function updateToggleButton(theme) {
+                if (theme === 'dark') {
+                    themeIcon.className = 'fas fa-sun';
+                    themeText.textContent = 'Light Mode';
+                } else {
+                    themeIcon.className = 'fas fa-moon';
+                    themeText.textContent = 'Dark Mode';
+                }
+            }
+            
+            themeToggle.addEventListener('click', toggleTheme);
+
+            // Text Highlighting Functionality
+            const readingText = document.getElementById('reading-text');
+            const highlightBtn = document.getElementById('highlight-btn');
+            let isHighlightMode = false;
+
+            // Load saved highlights
+            const savedHighlights = localStorage.getItem('highlights');
+            if (savedHighlights) {
+                readingText.innerHTML = savedHighlights;
+            }
+
+            highlightBtn.addEventListener('click', function() {
+                isHighlightMode = !isHighlightMode;
+                if (isHighlightMode) {
+                    this.classList.add('btn-primary');
+                    this.classList.remove('btn-outline');
+                    readingText.style.cursor = 'text';
+                } else {
+                    this.classList.remove('btn-primary');
+                    this.classList.add('btn-outline');
+                    readingText.style.cursor = 'default';
+                }
+            });
+
+            readingText.addEventListener('mouseup', function() {
+                if (!isHighlightMode) return;
+                
+                const selection = window.getSelection();
+                if (selection.toString().length > 0) {
+                    const range = selection.getRangeAt(0);
+                    
+                    // Check if selection is already highlighted
+                    let parent = range.commonAncestorContainer;
+                    while (parent && parent.nodeType !== 1) {
+                        parent = parent.parentNode;
+                    }
+                    
+                    if (parent && parent.classList.contains('highlight')) {
+                        // Remove highlight
+                        const text = parent.textContent;
+                        const textNode = document.createTextNode(text);
+                        parent.parentNode.replaceChild(textNode, parent);
+                    } else {
+                        // Add highlight
+                        const span = document.createElement('span');
+                        span.className = 'highlight';
+                        try {
+                            range.surroundContents(span);
+                        } catch (e) {
+                            // If surroundContents fails, try a different approach
+                            span.textContent = selection.toString();
+                            range.deleteContents();
+                            range.insertNode(span);
+                        }
+                    }
+                    
+                    selection.removeAllRanges();
+                    saveHighlights();
+                }
+            });
+
+            function saveHighlights() {
+                localStorage.setItem('highlights', readingText.innerHTML);
+            }
+
+            // Dictionary Lookup Functionality
+            const dictionaryPopup = document.getElementById('dictionary-popup');
+            const wordTitle = document.getElementById('word-title');
+            const wordMeaning = document.getElementById('word-meaning');
+            const wordExample = document.getElementById('word-example');
+
+            readingText.addEventListener('dblclick', function(e) {
+                const selection = window.getSelection();
+                const word = selection.toString().trim();
+                
+                if (word && word.split(' ').length === 1) {
+                    // Mock dictionary data for demonstration
+                    const mockDictionary = {
+                        'mr': { meaning: 'Abbreviation for Mister, a title used before a man\'s name', example: 'Mr. Dursley was the director of a firm.' },
+                        'mrs': { meaning: 'Title used before a married woman\'s name', example: 'Mrs. Dursley was thin and blonde.' },
+                        'dursley': { meaning: 'Fictional surname in Harry Potter series', example: 'The Dursleys lived at number four, Privet Drive.' },
+                        'pride': { meaning: 'Feeling of deep pleasure or satisfaction', example: 'They were proud to say they were normal.' },
+                        'normal': { meaning: 'Conforming to a standard; usual, typical, or expected', example: 'They were perfectly normal, thank you very much.' },
+                        'director': { meaning: 'A person who supervises the actors and other staff in a play, film, or similar production', example: 'Mr. Dursley was the director of a firm.' },
+                        'firm': { meaning: 'A business organization', example: 'He worked for a firm called Grunnings.' },
+                        'grunnings': { meaning: 'Fictional company name in Harry Potter', example: 'Grunnings made drills.' },
+                        'neck': { meaning: 'The part of the body connecting the head to the rest of the body', example: 'He had hardly any neck.' },
+                        'mustache': { meaning: 'Facial hair grown on the upper lip', example: 'He did have a very large mustache.' }
+                    };
+
+                    if (mockDictionary[word.toLowerCase()]) {
+                        const data = mockDictionary[word.toLowerCase()];
+                        wordTitle.textContent = word;
+                        wordMeaning.textContent = data.meaning;
+                        wordExample.textContent = data.example;
+                    } else {
+                        wordTitle.textContent = word;
+                        wordMeaning.textContent = 'Definition not found in dictionary.';
+                        wordExample.textContent = '';
+                    }
+                    
+                    dictionaryPopup.style.display = 'block';
+                    dictionaryPopup.style.left = `${e.pageX + 10}px`;
+                    dictionaryPopup.style.top = `${e.pageY + 10}px`;
+                }
+            });
+
+            // Translation Functionality
+            const translationPopup = document.getElementById('translation-popup');
+            const translateBtn = document.getElementById('translate-btn');
+            const translatedText = document.getElementById('translated-text');
+            const targetLanguage = document.getElementById('target-language');
+            let isTranslateMode = false;
+
+            translateBtn.addEventListener('click', function() {
+                isTranslateMode = !isTranslateMode;
+                if (isTranslateMode) {
+                    this.classList.add('btn-primary');
+                    this.classList.remove('btn-outline');
+                    readingText.style.cursor = 'text';
+                } else {
+                    this.classList.remove('btn-primary');
+                    this.classList.add('btn-outline');
+                    readingText.style.cursor = 'default';
+                }
+            });
+
+            readingText.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                if (!isTranslateMode) return;
+                
+                const selection = window.getSelection();
+                const text = selection.toString().trim();
+                
+                if (text) {
+                    // Mock translations
+                    const mockTranslations = {
+                        'es': `[Spanish] ${text}`,
+                        'fr': `[French] ${text}`,
+                        'de': `[German] ${text}`,
+                        'it': `[Italian] ${text}`,
+                        'pt': `[Portuguese] ${text}`,
+                        'ru': `[Russian] ${text}`,
+                        'ja': `[Japanese] ${text}`,
+                        'zh': `[Chinese] ${text}`,
+                        'ar': `[Arabic] ${text}`,
+                        'hi': `[Hindi] ${text}`
+                    };
+                    
+                    const translation = mockTranslations[targetLanguage.value] || `Translated: ${text}`;
+                    translatedText.textContent = translation;
+                    
+                    translationPopup.style.display = 'block';
+                    translationPopup.style.left = `${e.pageX + 10}px`;
+                    translationPopup.style.top = `${e.pageY + 10}px`;
+                }
+            });
+
+            // Close popups
+            document.querySelectorAll('.close-popup').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.dictionary-popup, .translation-popup').style.display = 'none';
+                });
+            });
+
+            // Notes Functionality
+            const addNoteBtn = document.getElementById('add-note-btn');
+            const notesList = document.getElementById('notes-list');
+            let notes = JSON.parse(localStorage.getItem('notes')) || [];
+
+            function loadNotes() {
+                notesList.innerHTML = '';
+                notes.forEach((note, index) => {
+                    const noteElement = document.createElement('div');
+                    noteElement.className = 'note-item';
+                    noteElement.innerHTML = `
+                        <div class="note-text">
+                            <span class="note-highlight">${note.highlight}</span>
+                            ${note.text}
+                        </div>
+                        <button class="delete-note" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                    notesList.appendChild(noteElement);
+                });
+
+                document.querySelectorAll('.delete-note').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        notes.splice(index, 1);
+                        localStorage.setItem('notes', JSON.stringify(notes));
+                        loadNotes();
+                    });
+                });
+            }
+
+            addNoteBtn.addEventListener('click', function() {
+                const selection = window.getSelection().toString().trim();
+                if (selection) {
+                    const noteText = prompt('Add your note for this text:');
+                    if (noteText) {
+                        notes.push({
+                            highlight: selection,
+                            text: noteText,
+                            timestamp: new Date().toLocaleString()
+                        });
+                        localStorage.setItem('notes', JSON.stringify(notes));
+                        loadNotes();
+                    }
+                } else {
+                    alert('Please select some text first to add a note.');
+                }
+            });
+
+            loadNotes();
+
+            // Read Aloud Functionality
+            const readAloudBtn = document.getElementById('read-aloud-btn');
+            let isReading = false;
+
+            readAloudBtn.addEventListener('click', function() {
+                if (isReading) {
+                    window.speechSynthesis.cancel();
+                    isReading = false;
+                    this.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
+                } else {
+                    const text = readingText.innerText;
+                    if ('speechSynthesis' in window) {
+                        const speech = new SpeechSynthesisUtterance(text);
+                        speech.rate = 0.8;
+                        speech.pitch = 1;
+                        speech.volume = 0.8;
+                        
+                        speech.onend = function() {
+                            isReading = false;
+                            readAloudBtn.innerHTML = '<i class="fas fa-volume-up"></i> Read Aloud';
+                        };
+                        
+                        window.speechSynthesis.speak(speech);
+                        isReading = true;
+                        this.innerHTML = '<i class="fas fa-stop"></i> Stop Reading';
+                    } else {
+                        alert('Text-to-speech is not supported in your browser.');
+                    }
+                }
+            });
+
+            // Font Controls
+            const fontSizeSelect = document.getElementById('font-size');
+            const fontFamilySelect = document.getElementById('font-family');
+
+            fontSizeSelect.addEventListener('change', function() {
+                readingText.style.fontSize = this.value + 'px';
+                localStorage.setItem('fontSize', this.value);
+            });
+
+            fontFamilySelect.addEventListener('change', function() {
+                readingText.style.fontFamily = this.value;
+                localStorage.setItem('fontFamily', this.value);
+            });
+
+            // Load saved font preferences
+            const savedFontSize = localStorage.getItem('fontSize');
+            const savedFontFamily = localStorage.getItem('fontFamily');
+            
+            if (savedFontSize) {
+                fontSizeSelect.value = savedFontSize;
+                readingText.style.fontSize = savedFontSize + 'px';
+            }
+            
+            if (savedFontFamily) {
+                fontFamilySelect.value = savedFontFamily;
+                readingText.style.fontFamily = savedFontFamily;
+            }
+
+            // Music Player Functionality
+            const playPauseBtn = document.getElementById('play-pause');
+            const prevTrackBtn = document.getElementById('prev-track');
+            const nextTrackBtn = document.getElementById('next-track');
+            const musicStatus = document.querySelector('.music-status');
+            let isPlaying = false;
+
+            const tracks = [
+                "Classical Reading - Moonlight Sonata",
+                "Focus Flow - Ambient Study",
+                "Reading Concentration - Piano Waves",
+                "Mindful Reading - Nature Sounds"
+            ];
+            let currentTrack = 0;
+
+            playPauseBtn.addEventListener('click', function() {
+                isPlaying = !isPlaying;
+                if (isPlaying) {
+                    this.innerHTML = '<i class="fas fa-pause"></i>';
+                    musicStatus.textContent = `Playing: ${tracks[currentTrack]}`;
+                } else {
+                    this.innerHTML = '<i class="fas fa-play"></i>';
+                    musicStatus.textContent = "Paused";
+                }
+            });
+
+            nextTrackBtn.addEventListener('click', function() {
+                currentTrack = (currentTrack + 1) % tracks.length;
+                if (isPlaying) {
+                    musicStatus.textContent = `Playing: ${tracks[currentTrack]}`;
+                }
+            });
+
+            prevTrackBtn.addEventListener('click', function() {
+                currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+                if (isPlaying) {
+                    musicStatus.textContent = `Playing: ${tracks[currentTrack]}`;
+                }
+            });
+
+            // Progress Tracking
+            const progressFill = document.getElementById('progress-fill');
+            const progressPercent = document.getElementById('progress-percent');
+
+            function updateProgress() {
+                const scrollTop = readingText.scrollTop;
+                const scrollHeight = readingText.scrollHeight - readingText.clientHeight;
+                if (scrollHeight > 0) {
+                    const scrollPercentage = Math.min(Math.round((scrollTop / scrollHeight) * 100), 100);
+                    progressFill.style.width = scrollPercentage + '%';
+                    progressPercent.textContent = scrollPercentage + '%';
+                    localStorage.setItem('readingProgress', scrollPercentage);
+                }
+            }
+
+            readingText.addEventListener('scroll', updateProgress);
+
+            const savedProgress = localStorage.getItem('readingProgress');
+            if (savedProgress) {
+                progressFill.style.width = savedProgress + '%';
+                progressPercent.textContent = savedProgress + '%';
+            }
+
+            // Auto-save
+            setInterval(function() {
+                saveHighlights();
+                localStorage.setItem('notes', JSON.stringify(notes));
+            }, 5000);
+
+            console.log('Reading Owl Interactive Reader initialized successfully!');
+        });
+    </script>
+</body>
+</html>

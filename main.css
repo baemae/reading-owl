@@ -1,0 +1,574 @@
+/* Basic Reset & Body Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f5f5f5; /* Light gray background for the whole page */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 80px 1fr; /* Sidebar width, then main content */
+    grid-template-rows: 1fr 60px; /* Main content row, then footer row */
+    height: 90vh; /* Adjust as needed for dashboard height */
+    width: 90vw; /* Adjust as needed for dashboard width */
+    max-width: 1400px; /* Max width for larger screens */
+    background-color: #ffffff; /* White background for the dashboard itself */
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden; /* Important for border-radius on children */
+}
+
+/* Sidebar Styling */
+.sidebar {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3; /* Sidebar spans both main content and footer rows */
+    background-color: #fcfcfc; /* Slightly different background for sidebar */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    border-right: 1px solid #eee; /* Subtle separator */
+}
+
+.sidebar .logo {
+    font-size: 2.5em;
+    color: #333; /* Example logo color */
+    margin-bottom: 40px;
+}
+
+.sidebar .main-nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Spacing between nav items */
+}
+
+.sidebar .nav-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    font-size: 1.5em;
+    color: #999;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar .nav-item:hover {
+    color: #333;
+    background-color: #f0f0f0;
+}
+
+.sidebar .nav-item.active {
+    background-color: #e74c3c; /* Red accent for active item */
+    color: #ffffff;
+}
+
+.sidebar .menu-icon {
+    margin-top: auto; /* Pushes it to the bottom */
+    font-size: 1.5em;
+    color: #999;
+    cursor: pointer;
+}
+
+/* Main Content Area Styling */
+.main-content {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 40px;
+    overflow-y: auto; /* Enable scrolling for main content if it overflows */
+}
+
+/* Top Header */
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #f7f7f7;
+    border-radius: 12px;
+    padding: 10px 15px;
+    width: 450px;
+    max-width: 50%; /* Adjust max-width as needed */
+}
+
+.search-bar i {
+    color: #999;
+    margin-right: 10px;
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1em;
+    flex-grow: 1;
+    color: #333;
+}
+
+.search-bar input::placeholder {
+    color: #bbb;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.user-profile .username {
+    margin-right: 15px;
+    font-weight: 600;
+    color: #555;
+}
+
+.user-profile .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #eee;
+}
+
+/* Hero Section */
+.hero-section {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr; /* Text content and author content */
+    gap: 50px;
+    margin-bottom: 50px;
+    align-items: start; /* Align items to the top */
+}
+
+.hero-text-content h1 {
+    font-size: 2.8em;
+    font-weight: 700;
+    color: #333;
+    line-height: 1.2;
+    margin-bottom: 15px;
+}
+
+.hero-text-content h1 span {
+    color: #e74c3c; /* Accent color for "going." */
+}
+
+.hero-text-content p {
+    font-size: 1.05em;
+    color: #777;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    max-width: 90%;
+}
+
+.start-reading-btn {
+    background-color: #f0f0f0;
+    color: #555;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.start-reading-btn:hover {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.featured-author {
+    background-color: #fcfcfc;
+    border-radius: 15px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align text to the left */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.featured-author .author-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 2px solid #eee;
+}
+
+.featured-author .author-info {
+    margin-bottom: 15px;
+}
+
+.featured-author .author-name {
+    display: block;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #333;
+}
+
+.featured-author .author-label {
+    font-size: 0.9em;
+    color: #999;
+}
+
+.featured-author .author-quote {
+    font-size: 0.95em;
+    color: #666;
+    line-height: 1.5;
+}
+
+
+/* Book Carousel Section */
+.book-carousel-section {
+    position: relative;
+    padding-bottom: 30px; /* Space for carousel nav */
+}
+
+.book-list {
+    display: flex;
+    gap: 30px; /* Spacing between books */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding-bottom: 20px; /* Space for scrollbar */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.book-list::-webkit-scrollbar {
+    display: none;
+}
+
+.book-item {
+    flex-shrink: 0; /* Prevent items from shrinking */
+    width: 150px; /* Fixed width for each book */
+    text-align: center;
+}
+
+.book-item img {
+    width: 100%;
+    height: 220px; /* Maintain consistent height */
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 10px;
+}
+
+.book-details .book-title {
+    display: block;
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 3px;
+}
+
+.book-details .book-author {
+    font-size: 0.85em;
+    color: #999;
+}
+
+.carousel-nav {
+    position: absolute;
+    top: -50px; /* Position above the books */
+    right: 0;
+    display: flex;
+    gap: 10px;
+}
+
+.carousel-nav .arrow-btn {
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    color: #666;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.carousel-nav .arrow-btn:hover {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+
+/* Bottom Footer Bar */
+.bottom-bar {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    background-color: #ffffff; /* Same as main dashboard background */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    border-top: 1px solid #eee; /* Subtle separator */
+}
+
+.bottom-bar .menu-icon-footer {
+    font-size: 1.5em;
+    color: #999;
+    cursor: pointer;
+}
+
+.bottom-bar .notification-text {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.bottom-bar .notification-text i {
+    color: #e74c3c; /* Accent color for info icon */
+    margin-right: 8px;
+}
+
+.bottom-bar .notification-text strong {
+    font-weight: 600;
+    color: #555;
+}
+
+.bottom-bar .progress-info {
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #555;
+}
+
+
+/* ------------------------------------------- */
+/* RESPONSIVE DESIGN - MEDIA QUERIES           */
+/* ------------------------------------------- */
+
+/* Adjust dashboard container for smaller screens */
+@media (max-width: 1024px) {
+    .dashboard-container {
+        width: 95vw;
+        height: 95vh;
+        grid-template-columns: 1fr; /* Sidebar collapses, main content takes full width */
+        grid-template-rows: auto 1fr auto; /* Header, Main, Footer */
+        border-radius: 15px;
+    }
+
+    /* Sidebar becomes a top header on smaller screens */
+    .sidebar {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+        flex-direction: row; /* Layout items horizontally */
+        justify-content: space-between;
+        padding: 15px 20px;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        background-color: #ffffff; /* Match dashboard background */
+        box-shadow: 0 2px 10px rgba(0,0,0,0.03); /* Subtle shadow for top bar */
+    }
+
+    .sidebar .logo {
+        margin-bottom: 0;
+        font-size: 2em;
+    }
+
+    .sidebar .main-nav {
+        display: none; /* Hide main nav in sidebar for now, will move to footer */
+    }
+
+    .sidebar .menu-icon {
+        margin-top: 0; /* Reset margin */
+        display: none; /* Hide this menu icon as we'll use the footer one */
+    }
+
+    /* Main Content adjustments */
+    .main-content {
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+        padding: 20px;
+    }
+
+    /* Top Header (now the main search bar) */
+    .top-header {
+        flex-direction: column; /* Stack search and user profile */
+        align-items: flex-start;
+        margin-bottom: 30px;
+        gap: 20px;
+    }
+
+    .search-bar {
+        width: 100%; /* Full width for search bar */
+        max-width: 100%;
+        padding: 12px 15px; /* Slightly larger padding */
+    }
+
+    .user-profile {
+        width: 100%;
+        justify-content: flex-end; /* Push user profile to the right */
+    }
+
+    .user-profile .username {
+        order: 2; /* Change order to have avatar first */
+        margin-left: 15px;
+        margin-right: 0;
+    }
+    .user-profile .avatar {
+        order: 1;
+    }
+
+
+    /* Hero Section adjustments */
+    .hero-section {
+        grid-template-columns: 1fr; /* Stack content vertically */
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .hero-text-content h1 {
+        font-size: 2em; /* Smaller font size */
+        margin-bottom: 10px;
+    }
+
+    .hero-text-content p {
+        font-size: 0.95em;
+        margin-bottom: 20px;
+        max-width: 100%;
+    }
+
+    .featured-author {
+        padding: 20px;
+    }
+
+    /* Book Carousel adjustments */
+    .book-carousel-section {
+        padding-bottom: 0;
+        margin-bottom: 20px; /* Add some space before the footer */
+    }
+
+    .carousel-nav {
+        position: static; /* Remove absolute positioning */
+        justify-content: flex-end; /* Align arrows to the right */
+        margin-top: 20px; /* Space above arrows */
+    }
+
+    .book-item {
+        width: 120px; /* Smaller book width */
+    }
+    .book-item img {
+        height: 180px; /* Adjust height */
+    }
+
+    /* Bottom Footer Bar (now main navigation for mobile) */
+    .bottom-bar {
+        grid-column: 1 / 2;
+        grid-row: 3 / 4;
+        padding: 15px 20px;
+        background-color: #fcfcfc; /* Slightly different background for footer nav */
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.03); /* Subtle shadow for bottom bar */
+        flex-wrap: wrap; /* Allow items to wrap */
+        justify-content: center; /* Center items for better appearance */
+        gap: 10px 20px; /* Gap between items */
+    }
+
+    .bottom-bar .menu-icon-footer {
+        display: block; /* Show menu icon in footer */
+        order: 1;
+        flex-basis: 100%; /* Take full width */
+        text-align: center;
+        font-size: 1.8em;
+        margin-bottom: 10px;
+    }
+
+    /* Move sidebar nav items to footer for mobile */
+    .bottom-bar .notification-text {
+        order: 3;
+        flex-basis: 100%; /* Take full width */
+        text-align: center;
+        font-size: 0.8em; /* Smaller font */
+    }
+    .bottom-bar .progress-info {
+        order: 2;
+        font-size: 0.85em;
+    }
+
+    /* Add a pseudo-nav for the footer to hold the main-nav items */
+    /* This requires a JS toggle or restructuring HTML for a real mobile nav */
+    /* For this example, we'll just center the progress info */
+}
+
+/* Further adjustments for very small mobile screens */
+@media (max-width: 600px) {
+    body {
+        min-height: auto; /* Allow body to shrink */
+        align-items: flex-start; /* Align to top */
+    }
+    .dashboard-container {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0; /* No border-radius on full mobile screen */
+        box-shadow: none; /* No shadow on full mobile screen */
+    }
+
+    .main-content {
+        padding: 15px;
+    }
+
+    .hero-text-content h1 {
+        font-size: 1.8em;
+    }
+
+    .hero-text-content p {
+        font-size: 0.9em;
+    }
+
+    .start-reading-btn {
+        width: 100%; /* Full width button */
+        justify-content: center;
+        padding: 10px 15px;
+    }
+
+    .featured-author {
+        padding: 15px;
+    }
+    .featured-author .author-quote {
+        font-size: 0.9em;
+    }
+
+    .book-item {
+        width: 100px; /* Even smaller book width */
+    }
+    .book-item img {
+        height: 150px;
+    }
+
+    .carousel-nav {
+        justify-content: center; /* Center arrows */
+    }
+
+    .bottom-bar {
+        padding: 10px 15px;
+        gap: 10px;
+    }
+    .bottom-bar .menu-icon-footer {
+        margin-bottom: 0;
+    }
+    .bottom-bar .notification-text,
+    .bottom-bar .progress-info {
+        font-size: 0.75em;
+    }
+}

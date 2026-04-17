@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Owl - Settings</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦉</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-50: #FCF6F4;
+            --primary-100: #F7ECEA;
+            --primary-200: #F4D9D7;
+            --primary-300: #EBBAB8;
+            --primary-400: #DE938E;
+            --primary-500: #CE6855;
+            --primary-600: #B44446;
+            --primary-700: #9A363A;
+            --primary-800: #822F35;
+            --gray-100: #f5f5f5;
+            --gray-200: #eeeeee;
+            --gray-300: #e0e0e0;
+            --gray-400: #bdbdbd;
+            --gray-500: #9e9e9e;
+            --gray-600: #757575;
+            --gray-700: #616161;
+            --gray-800: #424242;
+            --gray-900: #212121;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+            
+            /* Theme variables */
+            --bg-primary: var(--primary-50);
+            --bg-secondary: white;
+            --text-primary: var(--gray-800);
+            --text-secondary: var(--gray-600);
+            --border-color: var(--gray-300);
+            
+            /* Font size variables */
+            --font-size-base: 1rem;
+            --font-size-sm: 0.875rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            
+            /* Accent color variables */
+            --accent-primary: var(--primary-600);
+            --accent-secondary: var(--primary-500);
+            --accent-hover: var(--primary-700);
+        }
+
+        /* Dark theme */
+        .dark-theme {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #404040;
+        }
+
+        /* Font size classes */
+        .font-size-small {
+            --font-size-base: 0.875rem;
+            --font-size-sm: 0.75rem;
+            --font-size-lg: 1rem;
+            --font-size-xl: 1.125rem;
+        }
+
+        .font-size-large {
+            --font-size-base: 1.125rem;
+            --font-size-sm: 1rem;
+            --font-size-lg: 1.25rem;
+            --font-size-xl: 1.5rem;
+        }
+
+        .font-size-xlarge {
+            --font-size-base: 1.25rem;
+            --font-size-sm: 1.125rem;
+            --font-size-lg: 1.5rem;
+            --font-size-xl: 1.75rem;
+        }
+
+        /* Accent color classes */
+        .accent-blue {
+            --accent-primary: #3b82f6;
+            --accent-secondary: #60a5fa;
+            --accent-hover: #2563eb;
+        }
+
+        .accent-green {
+            --accent-primary: #10b981;
+            --accent-secondary: #34d399;
+            --accent-hover: #059669;
+        }
+
+        .accent-purple {
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #a78bfa;
+            --accent-hover: #7c3aed;
+        }
+
+        .accent-orange {
+            --accent-primary: #f59e0b;
+            --accent-secondary: #fbbf24;
+            --accent-hover: #d97706;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            transition: var(--transition);
+            font-size: var(--font-size-base);
+        }
+
+        /* Apply font sizes to all elements */
+        body, .sidebar, .main-content, .settings-section, .setting-item, .btn, 
+        select, input, .settings-title, .setting-name, .setting-desc {
+            font-size: var(--font-size-base);
+        }
+
+        .settings-title {
+            font-size: var(--font-size-lg);
+        }
+
+        .setting-name {
+            font-size: var(--font-size-base);
+        }
+
+        .setting-desc {
+            font-size: var(--font-size-sm);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(to bottom, var(--accent-hover), var(--accent-primary));
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: var(--transition);
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .logo-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            color: var(--primary-200);
+            position: relative;
+        }
+
+        .logo-icon::after {
+            content: "🦉";
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .logo span {
+            color: var(--primary-200);
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0 15px;
+        }
+
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .nav-links i {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Cute Theme Toggle Button - Your original style */
+        .theme-toggle-container {
+            margin-top: auto;
+            padding: 0 20px;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            width: 100%;
+            padding: 12px 16px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .theme-toggle:active {
+            transform: translateY(0);
+        }
+
+        .theme-toggle i {
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover i {
+            transform: scale(1.1);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 30px;
+            transition: var(--transition);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h2 {
+            font-size: var(--font-size-xl);
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: var(--font-size-lg);
+            box-shadow: var(--shadow);
+        }
+
+        /* Settings Container */
+        .settings-container {
+            max-width: 800px;
+        }
+
+        .settings-section {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            animation: slideUp 0.5s ease;
+            transition: var(--transition);
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-100);
+        }
+
+        .settings-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+            font-size: 1.2rem;
+        }
+
+        .settings-title {
+            font-size: var(--font-size-lg);
+            color: var(--accent-primary);
+        }
+
+        .settings-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--gray-100);
+            border-radius: 8px;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .dark-theme .setting-item {
+            background: #3a3a3a;
+        }
+
+        .setting-item:hover {
+            background: var(--primary-50);
+            transform: translateX(5px);
+        }
+
+        .dark-theme .setting-item:hover {
+            background: #4a4a4a;
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .setting-desc {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+
+        /* Theme toggle in appearance section */
+        .theme-toggle-container-appearance {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-toggle-appearance {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .theme-toggle-appearance input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .theme-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--gray-400);
+            transition: var(--transition);
+            border-radius: 24px;
+        }
+
+        .theme-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+
+        input:checked + .theme-slider {
+            background-color: var(--accent-primary);
+        }
+
+        input:checked + .theme-slider:before {
+            transform: translateX(26px);
+        }
+
+        .theme-icon {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        /* Font Size Controls */
+        .font-size-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .font-size-btn {
+            padding: 8px 12px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .font-size-btn.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .font-size-btn:hover:not(.active) {
+            border-color: var(--accent-primary);
+        }
+
+        /* Accent Color Controls */
+        .accent-color-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 3px solid transparent;
+        }
+
+        .color-option.active {
+            border-color: var(--text-primary);
+            transform: scale(1.2);
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-red { background: linear-gradient(45deg, #B44446, #CE6855); }
+        .color-blue { background: linear-gradient(45deg, #3b82f6, #60a5fa); }
+        .color-green { background: linear-gradient(45deg, #10b981, #34d399); }
+        .color-purple { background: linear-gradient(45deg, #8b5cf6, #a78bfa); }
+        .color-orange { background: linear-gradient(45deg, #f59e0b, #fbbf24); }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--gray-400);
+            transition: var(--transition);
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent-primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Select and Input Styles */
+        select, input[type="number"], input[type="text"], input[type="email"] {
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: var(--transition);
+            font-size: var(--font-size-base);
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 20%, transparent);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: var(--font-size-base);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .btn-outline:hover {
+            background-color: color-mix(in srgb, var(--accent-primary) 10%, transparent);
+        }
+
+        .dark-theme .btn-outline:hover {
+            background-color: color-mix(in srgb, var(--accent-primary) 20%, transparent);
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: var(--font-size-xl);
+            font-weight: bold;
+        }
+
+        .profile-info h3 {
+            font-size: var(--font-size-lg);
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .profile-info p {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+                overflow: visible;
+            }
+            
+            .logo h1, .nav-links span {
+                display: none;
+            }
+            
+            .logo {
+                justify-content: center;
+                padding: 0 0 20px;
+            }
+            
+            .logo-icon {
+                margin-right: 0;
+                font-size: 28px;
+            }
+            
+            .nav-links a {
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .nav-links i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .theme-toggle span {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .user-profile {
+                align-self: flex-end;
+            }
+            
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .font-size-controls, .accent-color-controls {
+                flex-wrap: wrap;
+            }
+            
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            
+            .nav-links {
+                display: flex;
+                justify-content: space-around;
+                padding: 0;
+            }
+            
+            .nav-links li {
+                margin-bottom: 0;
+            }
+            
+            .logo {
+                display: none;
+            }
+            
+            .theme-toggle-container {
+                justify-content: center;
+                margin: 10px;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="logo">
+            <h1>Reading <span>Owl</span></h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="home.html"><i class="fas fa-home"></i> <span>Home</span></a></li>
+            <li><a href="stats.html"><i class="fas fa-chart-bar"></i> <span>Stats</span></a></li>
+            <li><a href="reading.html"><i class="fas fa-book-open"></i> <span>Reading</span></a></li>
+            <li><a href="community.html"><i class="fas fa-users"></i> <span>Community</span></a></li>
+            <li><a href="library.html"><i class="fas fa-book"></i> <span>Library</span></a></li>
+            <li><a href="challenges.html"><i class="fas fa-trophy"></i> <span>Challenges</span></a></li>
+            <li><a href="settings.html" class="active"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+        </ul>
+        
+        <!-- Your original button theme toggle - preserved -->
+        <div class="theme-toggle-container">
+            <button id="theme-toggle-btn" class="theme-toggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+                <span>Dark Mode</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h2>Settings</h2>
+            <div class="user-profile">
+                <div class="user-avatar">JS</div>
+            </div>
+        </div>
+
+        <div class="settings-container">
+            <!-- Profile Settings -->
+            <div class="settings-section">
+                <div class="settings-header">
+                    <div class="settings-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 class="settings-title">Profile Settings</h3>
+                </div>
+                <div class="profile-section">
+                    <div class="profile-avatar">JS</div>
+                    <div class="profile-info">
+                        <h3>Jessica Smith</h3>
+                        <p>Reader since January 2023</p>
+                    </div>
+                </div>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Display Name</div>
+                            <div class="setting-desc">How your name appears to other users</div>
+                        </div>
+                        <input type="text" value="Jessica Smith">
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Email Address</div>
+                            <div class="setting-desc">Your account email for notifications</div>
+                        </div>
+                        <input type="email" value="jessica.smith@example.com">
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Bio</div>
+                            <div class="setting-desc">Tell others about your reading interests</div>
+                        </div>
+                        <input type="text" value="Fantasy & Sci-Fi lover 📚">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appearance Settings -->
+            <div class="settings-section">
+                <div class="settings-header">
+                    <div class="settings-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="settings-title">Appearance</h3>
+                </div>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Theme</div>
+                            <div class="setting-desc">Choose between light and dark mode</div>
+                        </div>
+                        <div class="theme-toggle-container-appearance">
+                            <i class="fas fa-sun theme-icon"></i>
+                            <label class="theme-toggle-appearance">
+                                <input type="checkbox" id="themeToggle">
+                                <span class="theme-slider"></span>
+                            </label>
+                            <i class="fas fa-moon theme-icon"></i>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Font Size</div>
+                            <div class="setting-desc">Adjust text size for better readability</div>
+                        </div>
+                        <div class="font-size-controls">
+                            <button class="font-size-btn" data-size="small">A</button>
+                            <button class="font-size-btn active" data-size="medium">A</button>
+                            <button class="font-size-btn" data-size="large">A</button>
+                            <button class="font-size-btn" data-size="xlarge">A</button>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Accent Color</div>
+                            <div class="setting-desc">Choose your preferred color scheme</div>
+                        </div>
+                        <div class="accent-color-controls">
+                            <div class="color-option color-red active" data-color="red"></div>
+                            <div class="color-option color-blue" data-color="blue"></div>
+                            <div class="color-option color-green" data-color="green"></div>
+                            <div class="color-option color-purple" data-color="purple"></div>
+                            <div class="color-option color-orange" data-color="orange"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="settings-section">
+                <div class="settings-header">
+                    <div class="settings-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="settings-title">Notifications</h3>
+                </div>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Email Notifications</div>
+                            <div class="setting-desc">Receive updates about your reading progress</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Reading Reminders</div>
+                            <div class="setting-desc">Daily reminders to read</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Challenge Updates</div>
+                            <div class="setting-desc">Notifications about challenge progress</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Community Activity</div>
+                            <div class="setting-desc">Updates from your reading groups</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reading Preferences -->
+            <div class="settings-section">
+                <div class="settings-header">
+                    <div class="settings-icon">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <h3 class="settings-title">Reading Preferences</h3>
+                </div>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Daily Reading Goal</div>
+                            <div class="setting-desc">Set your target reading time per day</div>
+                        </div>
+                        <select>
+                            <option>30 minutes</option>
+                            <option selected>1 hour</option>
+                            <option>2 hours</option>
+                            <option>3 hours</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Pages per Session</div>
+                            <div class="setting-desc">Target pages to read in one sitting</div>
+                        </div>
+                        <input type="number" value="25" min="10" max="100">
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Reading Speed</div>
+                            <div class="setting-desc">Adjust time estimates based on your pace</div>
+                        </div>
+                        <select>
+                            <option>Slow</option>
+                            <option selected>Average</option>
+                            <option>Fast</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Privacy & Data -->
+            <div class="settings-section">
+                <div class="settings-header">
+                    <div class="settings-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="settings-title">Privacy & Data</h3>
+                </div>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Public Profile</div>
+                            <div class="setting-desc">Allow others to see your reading activity</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Reading History</div>
+                            <div class="setting-desc">Save detailed reading history</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Data Collection</div>
+                            <div class="setting-desc">Allow anonymous usage data collection</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-download"></i> Export Reading Data
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-trash"></i> Clear Reading History
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Management -->
+            <div class="settings-section">
+                <div class="settings-header">
+                    <div class="settings-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="settings-title">Account Management</h3>
+                </div>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Change Password</div>
+                            <div class="setting-desc">Update your account password</div>
+                        </div>
+                        <button class="btn btn-outline">Change Password</button>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Two-Factor Authentication</div>
+                            <div class="setting-desc">Add an extra layer of security</div>
+                        </div>
+                        <button class="btn btn-outline">Enable 2FA</button>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Delete Account</div>
+                            <div class="setting-desc">Permanently delete your account and data</div>
+                        </div>
+                        <button class="btn btn-danger">Delete Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeToggleBtn = document.getElementById('theme-toggle-btn');
+            const body = document.body;
+            const fontButtons = document.querySelectorAll('.font-size-btn');
+            const colorOptions = document.querySelectorAll('.color-option');
+
+            // Track current theme state
+            let isDarkMode = false;
+
+            // Initialize settings from localStorage
+            function initializeSettings() {
+                // Theme
+                const savedTheme = localStorage.getItem('readingOwlTheme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                    enableDarkMode();
+                } else {
+                    disableDarkMode();
+                }
+
+                // Font size
+                const savedFontSize = localStorage.getItem('readingOwlFontSize') || 'medium';
+                setFontSize(savedFontSize);
+                fontButtons.forEach(btn => {
+                    if (btn.dataset.size === savedFontSize) {
+                        btn.classList.add('active');
+                    }
+                });
+
+                // Accent color
+                const savedColor = localStorage.getItem('readingOwlAccentColor') || 'red';
+                setAccentColor(savedColor);
+                colorOptions.forEach(option => {
+                    if (option.dataset.color === savedColor) {
+                        option.classList.add('active');
+                    }
+                });
+            }
+
+            // Theme functionality
+            function enableDarkMode() {
+                body.classList.add('dark-theme');
+                themeToggle.checked = true;
+                isDarkMode = true;
+                updateButtonText();
+                localStorage.setItem('readingOwlTheme', 'dark');
+            }
+
+            function disableDarkMode() {
+                body.classList.remove('dark-theme');
+                themeToggle.checked = false;
+                isDarkMode = false;
+                updateButtonText();
+                localStorage.setItem('readingOwlTheme', 'light');
+            }
+
+            function toggleTheme() {
+                if (isDarkMode) {
+                    disableDarkMode();
+                } else {
+                    enableDarkMode();
+                }
+            }
+
+            function updateButtonText() {
+                const buttonText = themeToggleBtn.querySelector('span');
+                const buttonIcon = themeToggleBtn.querySelector('i');
+                
+                if (isDarkMode) {
+                    buttonText.textContent = 'Light Mode';
+                    buttonIcon.className = 'fas fa-sun';
+                } else {
+                    buttonText.textContent = 'Dark Mode';
+                    buttonIcon.className = 'fas fa-moon';
+                }
+            }
+
+            // Event listeners for theme toggles
+            themeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    enableDarkMode();
+                } else {
+                    disableDarkMode();
+                }
+            });
+
+            themeToggleBtn.addEventListener('click', function() {
+                toggleTheme();
+            });
+
+            // Font size functionality
+            fontButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const size = this.dataset.size;
+                    setFontSize(size);
+                    
+                    fontButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    localStorage.setItem('readingOwlFontSize', size);
+                });
+            });
+
+            // Accent color functionality
+            colorOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const color = this.dataset.color;
+                    setAccentColor(color);
+                    
+                    colorOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    localStorage.setItem('readingOwlAccentColor', color);
+                });
+            });
+
+            // Font size API
+            function setFontSize(size) {
+                body.classList.remove('font-size-small', 'font-size-large', 'font-size-xlarge');
+                
+                switch(size) {
+                    case 'small':
+                        body.classList.add('font-size-small');
+                        break;
+                    case 'large':
+                        body.classList.add('font-size-large');
+                        break;
+                    case 'xlarge':
+                        body.classList.add('font-size-xlarge');
+                        break;
+                    // medium is default, no class needed
+                }
+            }
+
+            // Accent color API
+            function setAccentColor(color) {
+                body.classList.remove('accent-blue', 'accent-green', 'accent-purple', 'accent-orange');
+                
+                if (color !== 'red') {
+                    body.classList.add(`accent-${color}`);
+                }
+            }
+
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                if (!localStorage.getItem('readingOwlTheme')) {
+                    if (e.matches) {
+                        enableDarkMode();
+                    } else {
+                        disableDarkMode();
+                    }
+                }
+            });
+
+            // Toggle switches functionality
+            const toggleSwitches = document.querySelectorAll('.toggle-switch input');
+            toggleSwitches.forEach(switchEl => {
+                switchEl.addEventListener('change', function() {
+                    const settingName = this.closest('.setting-item').querySelector('.setting-name').textContent;
+                    localStorage.setItem(`readingOwl_${settingName}`, this.checked);
+                    
+                    this.parentElement.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        this.parentElement.style.transform = 'scale(1)';
+                    }, 150);
+                });
+
+                // Load saved preferences
+                const settingName = switchEl.closest('.setting-item').querySelector('.setting-name').textContent;
+                const savedValue = localStorage.getItem(`readingOwl_${settingName}`);
+                if (savedValue !== null) {
+                    switchEl.checked = savedValue === 'true';
+                }
+            });
+
+            // Navigation
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Button animations
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                });
+            });
+
+            // Export data functionality
+            const exportButton = document.querySelector('.btn-primary .fa-download')?.closest('.btn');
+            if (exportButton) {
+                exportButton.addEventListener('click', function() {
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Exporting...';
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-check"></i> Exported Successfully';
+                        setTimeout(() => {
+                            this.innerHTML = '<i class="fas fa-download"></i> Export Reading Data';
+                        }, 2000);
+                    }, 1500);
+                });
+            }
+
+            // Settings API
+            window.readingOwlSettings = {
+                // Theme API
+                getSystemTheme: () => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+                setTheme: (theme) => {
+                    if (theme === 'dark') {
+                        enableDarkMode();
+                    } else {
+                        disableDarkMode();
+                    }
+                },
+                getCurrentTheme: () => isDarkMode ? 'dark' : 'light',
+
+                // Font Size API
+                setFontSize: (size) => {
+                    setFontSize(size);
+                    fontButtons.forEach(btn => {
+                        btn.classList.toggle('active', btn.dataset.size === size);
+                    });
+                    localStorage.setItem('readingOwlFontSize', size);
+                },
+                getCurrentFontSize: () => {
+                    if (body.classList.contains('font-size-small')) return 'small';
+                    if (body.classList.contains('font-size-large')) return 'large';
+                    if (body.classList.contains('font-size-xlarge')) return 'xlarge';
+                    return 'medium';
+                },
+                getAvailableFontSizes: () => ['small', 'medium', 'large', 'xlarge'],
+
+                // Accent Color API
+                setAccentColor: (color) => {
+                    setAccentColor(color);
+                    colorOptions.forEach(option => {
+                        option.classList.toggle('active', option.dataset.color === color);
+                    });
+                    localStorage.setItem('readingOwlAccentColor', color);
+                },
+                getCurrentAccentColor: () => {
+                    if (body.classList.contains('accent-blue')) return 'blue';
+                    if (body.classList.contains('accent-green')) return 'green';
+                    if (body.classList.contains('accent-purple')) return 'purple';
+                    if (body.classList.contains('accent-orange')) return 'orange';
+                    return 'red';
+                },
+                getAvailableAccentColors: () => ['red', 'blue', 'green', 'purple', 'orange'],
+
+                // Reset all settings
+                resetToDefaults: () => {
+                    localStorage.removeItem('readingOwlTheme');
+                    localStorage.removeItem('readingOwlFontSize');
+                    localStorage.removeItem('readingOwlAccentColor');
+                    
+                    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    if (systemPrefersDark) {
+                        enableDarkMode();
+                    } else {
+                        disableDarkMode();
+                    }
+                    
+                    setFontSize('medium');
+                    fontButtons.forEach(btn => {
+                        btn.classList.toggle('active', btn.dataset.size === 'medium');
+                    });
+                    
+                    setAccentColor('red');
+                    colorOptions.forEach(option => {
+                        option.classList.toggle('active', option.dataset.color === 'red');
+                    });
+                }
+            };
+
+            // Initialize settings
+            initializeSettings();
+
+            console.log('Reading Owl Settings API loaded. Available methods:');
+            console.log('- readingOwlSettings.setTheme("dark" | "light")');
+            console.log('- readingOwlSettings.getCurrentTheme()');
+            console.log('- readingOwlSettings.setFontSize("small" | "medium" | "large" | "xlarge")');
+            console.log('- readingOwlSettings.getCurrentFontSize()');
+            console.log('- readingOwlSettings.setAccentColor("red" | "blue" | "green" | "purple" | "orange")');
+            console.log('- readingOwlSettings.getCurrentAccentColor()');
+            console.log('- readingOwlSettings.resetToDefaults()');
+        });
+    </script>
+</body>
+</html>

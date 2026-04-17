@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reading Owl - Your Literary Journey</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    :root {
+      --chestnut-50: #FCF6F4;
+      --chestnut-100: #F8ECEA;
+      --chestnut-200: #F4D9D7;
+      --chestnut-300: #EBBAB8;
+      --chestnut-400: #DE938E;
+      --chestnut-500: #CE6865;
+      --chestnut-600: #B44446;
+      --chestnut-700: #9A363A;
+      --chestnut-800: #822F35;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--chestnut-600) 0%, var(--chestnut-800) 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .auth-container {
+      display: flex;
+      max-width: 1000px;
+      width: 100%;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    .auth-image {
+      flex: 1;
+      background: linear-gradient(rgba(180, 68, 70, 0.7), rgba(130, 47, 53, 0.7)), url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1590&q=80');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+
+    .auth-image h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .auth-image p {
+      font-size: 1.1rem;
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    .owl-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      color: var(--chestnut-200);
+      filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+    }
+
+    .auth-form {
+      flex: 1;
+      padding: 50px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: var(--chestnut-50);
+    }
+
+    .auth-form h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: var(--chestnut-800);
+    }
+
+    .subtitle {
+      color: var(--chestnut-700);
+      margin-bottom: 30px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-group i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--chestnut-600);
+    }
+
+    input {
+      width: 100%;
+      padding: 15px 15px 15px 45px;
+      border: 2px solid var(--chestnut-200);
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: white;
+    }
+
+    input:focus {
+      border-color: var(--chestnut-600);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(180, 68, 70, 0.1);
+    }
+
+    .btn {
+      background: linear-gradient(to right, var(--chestnut-600), var(--chestnut-800));
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(180, 68, 70, 0.4);
+    }
+
+    .links {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .links a {
+      color: var(--chestnut-600);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .links a:hover {
+      color: var(--chestnut-800);
+      text-decoration: underline;
+    }
+
+    .api-section {
+      margin-top: 30px;
+      padding: 20px;
+      background: var(--chestnut-100);
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid var(--chestnut-200);
+    }
+
+    .api-section h3 {
+      margin-bottom: 15px;
+      color: var(--chestnut-800);
+    }
+
+    .quote-container {
+      font-style: italic;
+      color: var(--chestnut-700);
+      margin-bottom: 15px;
+      min-height: 60px;
+    }
+
+    .book-suggestion {
+      font-weight: 500;
+      color: var(--chestnut-600);
+      margin-bottom: 15px;
+      min-height: 40px;
+    }
+
+    .api-btn {
+      background: var(--chestnut-300);
+      color: var(--chestnut-800);
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .api-btn:hover {
+      background: var(--chestnut-400);
+      transform: translateY(-2px);
+    }
+
+    .toggle-form {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .toggle-btn {
+      background: none;
+      border: none;
+      color: var(--chestnut-600);
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .password-strength {
+      height: 5px;
+      background: var(--chestnut-200);
+      border-radius: 5px;
+      margin-top: 5px;
+      overflow: hidden;
+    }
+
+    .strength-meter {
+      height: 100%;
+      width: 0%;
+      transition: all 0.3s ease;
+    }
+
+    .strength-weak {
+      background: #ff6b6b;
+      width: 33%;
+    }
+
+    .strength-medium {
+      background: var(--chestnut-400);
+      width: 66%;
+    }
+
+    .strength-strong {
+      background: var(--chestnut-600);
+      width: 100%;
+    }
+
+    .social-login {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .social-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border: 1px solid var(--chestnut-200);
+      color: var(--chestnut-600);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 768px) {
+      .auth-container {
+        flex-direction: column;
+      }
+      
+      .auth-image {
+        padding: 30px 20px;
+      }
+      
+      .auth-form {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container">
+    <!-- Left image section -->
+    <div class="auth-image">
+      <i class="fas fa-owl owl-icon"></i>
+      <h1>Reading Owl</h1>
+      <p>Discover new worlds, one page at a time. Join our community of book lovers and track your reading journey.</p>
+    </div>
+
+    <!-- Right form section -->
+    <div class="auth-form">
+      <div id="login-form">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Log in to continue your reading journey</p>
+        <form id="loginForm">
+          <div class="form-group">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="login-email" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="login-password" placeholder="Password" required>
+          </div>
+          <button type="submit" class="btn">Login</button>
+        </form>
+        
+        <div class="social-login">
+          <button class="social-btn">
+            <i class="fab fa-google"></i>
+          </button>
+          <button class="social-btn">
+            <i class="fab fa-facebook-f"></i>
+          </button>
+          <button class="social-btn">
+            <i class="fab fa-twitter"></i>
+          </button>
+        </div>
+        
+        <div class="links">
+          <a href="forgot.html">Forgot Password?</a>
+          <p>Don't have an account? <button class="toggle-btn" onclick="toggleForm()"> <a href="signup.html"></a>   Sign up</button></p>
+        </div>
+      </div>
+
+      <div id="signup-form" style="display: none;">
+        <h2>Join Reading Owl</h2>
+        <p class="subtitle">Create an account to start your reading adventure</p>
+        <form id="signupForm">
+          <div class="form-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="signup-name" placeholder="Full Name" required>
+          </div>
+          <div class="form-group">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="signup-email" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="signup-password" placeholder="Password" required>
+            <div class="password-strength">
+              <div class="strength-meter" id="password-strength-meter"></div>
+            </div>
+          </div>
+          <button type="submit" class="btn">Sign Up</button>
+        </form>
+        
+        <div class="social-login">
+          <button class="social-btn">
+            <i class="fab fa-google"></i>
+          </button>
+          <button class="social-btn">
+            <i class="fab fa-facebook-f"></i>
+          </button>
+          <button class="social-btn">
+            <i class="fab fa-twitter"></i>
+          </button>
+        </div>
+        
+        <div class="links">
+          <p>Already have an account? <button class="toggle-btn" onclick="toggleForm()">Login</button></p>
+        </div>
+      </div>
+
+      <!-- Fun API Section -->
+      <div class="api-section">
+        <h3>Reading Inspiration</h3>
+        <div class="quote-container" id="quote-text">
+          "The more that you read, the more things you will know. The more that you learn, the more places you'll go." - Dr. Seuss
+        </div>
+        <div class="book-suggestion" id="book-suggestion">
+          Suggested: The Alchemist by Paulo Coelho
+        </div>
+        <button class="api-btn" onclick="getNewQuote()">Get New Inspiration</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle between login and signup forms
+    function toggleForm() {
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+      
+      if (loginForm.style.display === 'none') {
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+      } else {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+      }
+    }
+
+    // Password strength indicator
+    document.getElementById('signup-password').addEventListener('input', function() {
+      const password = this.value;
+      const strengthMeter = document.getElementById('password-strength-meter');
+      
+      // Reset classes
+      strengthMeter.className = 'strength-meter';
+      
+      if (password.length === 0) {
+        strengthMeter.style.width = '0%';
+        return;
+      }
+      
+      // Calculate strength (simple example)
+      let strength = 0;
+      if (password.length >= 6) strength += 1;
+      if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 1;
+      if (password.match(/\d/)) strength += 1;
+      if (password.match(/[^a-zA-Z\d]/)) strength += 1;
+      
+      // Update strength meter
+      if (strength <= 1) {
+        strengthMeter.classList.add('strength-weak');
+      } else if (strength <= 3) {
+        strengthMeter.classList.add('strength-medium');
+      } else {
+        strengthMeter.classList.add('strength-strong');
+      }
+    });
+
+    // Form submission handlers
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Login functionality would be implemented here!');
+      // In a real app, you would send login data to your backend
+    });
+
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Signup functionality would be implemented here!');
+      // In a real app, you would send signup data to your backend
+    });
+
+    // Fun API - Get a new quote
+    async function getNewQuote() {
+      const quoteElement = document.getElementById('quote-text');
+      const bookElement = document.getElementById('book-suggestion');
+      
+      // Show loading state
+      quoteElement.textContent = "Fetching a new inspiring quote...";
+      bookElement.textContent = "Finding a book recommendation...";
+      
+      try {
+        // Using a free quotes API
+        const response = await fetch('https://api.quotable.io/random');
+        const data = await response.json();
+        
+        quoteElement.textContent = `"${data.content}" - ${data.author}`;
+        
+        // Generate a random book suggestion (since we don't have a book API)
+        const books = [
+          "To Kill a Mockingbird by Harper Lee",
+          "1984 by George Orwell",
+          "Pride and Prejudice by Jane Austen",
+          "The Great Gatsby by F. Scott Fitzgerald",
+          "One Hundred Years of Solitude by Gabriel Garcia Marquez",
+          "The Catcher in the Rye by J.D. Salinger",
+          "The Lord of the Rings by J.R.R. Tolkien",
+          "Harry Potter and the Sorcerer's Stone by J.K. Rowling",
+          "The Hobbit by J.R.R. Tolkien",
+          "Brave New World by Aldous Huxley"
+        ];
+        
+        const randomBook = books[Math.floor(Math.random() * books.length)];
+        bookElement.textContent = `Suggested: ${randomBook}`;
+        
+      } catch (error) {
+        quoteElement.textContent = "Sometimes the best inspiration comes from within. What book has inspired you recently?";
+        bookElement.textContent = "Suggested: The Alchemist by Paulo Coelho";
+      }
+    }
+
+    // Add some interactive animations
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('focus', function() {
+        this.parentElement.style.transform = 'scale(1.02)';
+      });
+      
+      input.addEventListener('blur', function() {
+        this.parentElement.style.transform = 'scale(1)';
+      });
+    });
+  </script>
+</body>
+</html>
